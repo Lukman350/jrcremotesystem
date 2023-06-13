@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 14, 2022 at 11:26 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 7.3.30
+-- Generation Time: Jun 13, 2023 at 05:20 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,6 +50,32 @@ INSERT INTO `auth_tb_user` (`id`, `nama_lengkap`, `username`, `password`, `email
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `radio`
+--
+
+CREATE TABLE `radio` (
+  `id` int(11) NOT NULL,
+  `ip_address` varchar(24) NOT NULL DEFAULT '255.255.255.255',
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `channel` int(24) NOT NULL DEFAULT 0,
+  `rx_level` int(32) NOT NULL DEFAULT 0,
+  `power_level` int(32) NOT NULL DEFAULT 0,
+  `power` tinyint(1) NOT NULL,
+  `squelch` int(11) NOT NULL DEFAULT 0,
+  `remote` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `radio`
+--
+
+INSERT INTO `radio` (`id`, `ip_address`, `status`, `channel`, `rx_level`, `power_level`, `power`, `squelch`, `remote`) VALUES
+(1, '255.255.255.255', 0, 16, 50, 20, 1, 2, 1),
+(2, '127.0.0.1', 1, 24, 70, 40, 1, 2, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_user`
 --
 
@@ -81,6 +107,12 @@ ALTER TABLE `auth_tb_user`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `radio`
+--
+ALTER TABLE `radio`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tb_user`
 --
 ALTER TABLE `tb_user`
@@ -95,6 +127,12 @@ ALTER TABLE `tb_user`
 --
 ALTER TABLE `auth_tb_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37498;
+
+--
+-- AUTO_INCREMENT for table `radio`
+--
+ALTER TABLE `radio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
