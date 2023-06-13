@@ -24,11 +24,10 @@ class Main extends CI_Controller
 		$data['title'] 			= 'JRC Remote System';
 		$data['JS'] 			= 'main_display.js';
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
+		$data['radio_data'] = $this->radio->getRadioByColumn('id, status, channel, ip_address');
 
 		$page['sidebar'] 		= $this->load->view('templates/sidebar', $data, TRUE);
 		$page['content'] 		= $this->load->view('content/main_display', $data, TRUE);
-		$page['radio_data'] = $this->radio->getRadioByColumn('id, status, ip_address');
-
 
 		$this->load->view('templates/layout', $page);
 	}

@@ -110,18 +110,25 @@
 							<!-- <button class="btn btn-primary mx-auto" data-toggle="modal" data-target="#modal_main">Change</button> -->
 						</div>
 					</div>
-					<div class="card-body">
-						<div class="container">
-							<div class="row">
-								<?php foreach ($radio_data as $list) : ?>
-									<div class="col">
-										<button class="<?= $list['status'] == 1 ? 'btn btn-success btn-block mb-4' : 'btn btn-danger btn-block mb-4' ?>">
-											Radio VHF <?= $list['id'] ?>
-											<?= $list['status'] == 1 ? $list['channel'] : 'OFF' ?>
-										</button>
-									</div>
-								<?php endforeach; ?>
-							</div>
+					<div class="card-body w-100">
+						<div class="d-flex flex-wrap">
+							<?php for ($i = 0; $i < 2; $i++) : ?>
+								<div class="row justify-content-center align-items-stretch mb-3" style="gap: 1rem;">
+									<?php for ($j = 0; $j < 5; $j++) :
+										$index = $i * 5 + $j;
+										$radio = $radio_data[$index];
+									?>
+										<div class="col-sm-6 col-md-2">
+											<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>" style="font-size: small;">
+												Radio VHF <?= $radio['id'] ?>
+												<span class="d-block">
+													<?= ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') ?>
+												</span>
+											</button>
+										</div>
+									<?php endfor; ?>
+								</div>
+							<?php endfor; ?>
 						</div>
 					</div>
 				</div>
