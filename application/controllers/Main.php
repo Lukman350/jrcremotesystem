@@ -24,12 +24,44 @@ class Main extends CI_Controller
 		$data['title'] 			= 'JRC Remote System';
 		$data['JS'] 			= 'main_display.js';
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
-		$data['radio_data'] = $this->radio->getRadioByColumn('id, status, channel, ip_address');
+		$data['radio_data'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
 
 		$page['sidebar'] 		= $this->load->view('templates/sidebar', $data, TRUE);
 		$page['content'] 		= $this->load->view('content/main_display', $data, TRUE);
 
 		$this->load->view('templates/layout', $page);
+	}
+
+	public function get_radio()
+	{
+		$radio_id = $_POST['id'];
+
+		if (!isset($radio_id)) {
+			$notif_data = [
+				'status'  => FALSE,
+				'message' => 'Radio ID not found'
+			];
+
+			echo json_encode($notif_data);
+			die;
+		}
+
+		$radio_data = $this->radio->getRadio($radio_id);
+
+		if ($radio_data) {
+			$notif_data = [
+				'status'  => TRUE,
+				'message' => 'Radio data found',
+				'data'    => $radio_data
+			];
+		} else {
+			$notif_data = [
+				'status'  => FALSE,
+				'message' => 'Radio data not found'
+			];
+		}
+
+		echo json_encode($notif_data);
 	}
 
 	public function action_post()

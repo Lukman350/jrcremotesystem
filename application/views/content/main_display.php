@@ -1,3 +1,114 @@
+<style>
+	.content-wrapper {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		grid-template-rows: repeat(3, 1fr);
+		grid-column-gap: 10px;
+		grid-row-gap: 10px;
+		overflow-wrap: break-word;
+	}
+
+	@media screen and (max-width: 600px) {
+		.content-wrapper {
+			display: grid;
+			grid-template-columns: repeat(1, 1fr);
+			grid-template-rows: repeat(10, 1fr);
+			grid-column-gap: 10px;
+			grid-row-gap: 10px;
+		}
+	}
+
+	.radio-display {
+		display: grid;
+		padding: 1rem;
+		border: 1px solid #4b4b4b;
+	}
+
+	.radio-display .title {
+		font-size: 1.5rem;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	.radio-display .section-title {
+		font-size: 1.2rem;
+		text-transform: uppercase;
+	}
+
+	.radio-display .section {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(1, 1fr);
+		grid-column-gap: 10px;
+		grid-row-gap: 10px;
+	}
+
+	.radio-display .section-item {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		min-height: 130px;
+		border: 1px solid #4b4b4b;
+	}
+
+	.radio-display .section-item .section-item-title {
+		font-weight: bold;
+		font-size: 4rem;
+		text-transform: uppercase;
+	}
+
+	.radio-display .section-item .section-item-desc {
+		/* text-sm text-center text-slate-500 font-semibold uppercase */
+		font-size: 1rem;
+		text-transform: uppercase;
+		font-weight: semi-bold;
+		text-align: center;
+	}
+
+	.radio-display .p-9 {
+		padding: 2.25rem;
+	}
+
+	.radio-display .bar-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		flex-wrap: nowrap;
+		width: 3rem;
+		height: 8rem;
+		background-color: #e2e8f0;
+		border-radius: 0.25rem;
+		overflow: hidden;
+	}
+
+	.radio-display .progress-bar {
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		overflow: hidden;
+		transition: all 0.3s ease-in-out;
+	}
+
+	.radio-display .px-7 {
+		padding-left: 1.75rem;
+		padding-right: 1.75rem;
+	}
+
+	/* make a loader */
+	.loader {
+		border: 16px solid #f3f3f3;
+		border-radius: 50%;
+		border-top: 16px solid #3498db;
+		width: 120px;
+		height: 120px;
+		-webkit-animation: spin 2s linear infinite;
+		/* Safari */
+		animation: spin 2s linear infinite;
+	}
+</style>
+
 <div class="content">
 	<div class="panel-header bg-primary-gradient">
 		<div class="page-inner py-5">
@@ -111,24 +222,35 @@
 						</div>
 					</div>
 					<div class="card-body w-100">
-						<div class="d-flex flex-wrap">
-							<?php for ($i = 0; $i < 2; $i++) : ?>
-								<div class="row justify-content-center align-items-stretch mb-3" style="gap: 1rem;">
-									<?php for ($j = 0; $j < 5; $j++) :
-										$index = $i * 5 + $j;
-										$radio = $radio_data[$index];
-									?>
-										<div class="col-sm-6 col-md-2">
-											<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>" style="font-size: small;">
-												Radio VHF <?= $radio['id'] ?>
-												<span class="d-block">
-													<?= ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') ?>
-												</span>
-											</button>
-										</div>
-									<?php endfor; ?>
+						<div class="content-wrapper">
+							<?php
+							$countVHF = 0;
+							$countHF = 0;
+							foreach ($radio_data as $radio) :
+								$type = "";
+								if ($radio['type'] == "VHF") {
+									$countVHF = $countVHF += 1;
+									$type = "VHF " . $countVHF;
+								} else if ($radio['type'] == "HF") {
+									$countHF = $countHF += 1;
+									$type = "HF " . $countHF;
+								} else {
+									$type = "NAVTEK 1";
+								}
+							?>
+								<div>
+									<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>">
+										Radio <?= $type ?>
+										<span class="d-block">
+											<?= ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') ?>
+										</span>
+									</button>
 								</div>
-							<?php endfor; ?>
+							<?php endforeach; ?>
+						</div>
+
+						<div id="radio-display" class="mt-4">
+
 						</div>
 					</div>
 				</div>
