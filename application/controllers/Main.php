@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 class Main extends CI_Controller
 {
 
-	private $client;
+	private $_client;
 
 	public function __construct()
 	{

@@ -25,4 +25,14 @@ class M_Radio extends CI_model
   {
     $this->db->insert('radio', $data);
   }
+
+  public function updateRadio($newData, $id, &$affectedRows)
+  {
+    $this->db->where('id', $id);
+    $this->db->update('radio', $newData);
+
+    $affectedRows = [
+      'affected_rows' => $this->db->affected_rows()
+    ];
+  }
 }

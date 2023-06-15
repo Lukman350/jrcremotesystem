@@ -43,6 +43,18 @@
 		grid-row-gap: 10px;
 	}
 
+	.radio-display .section-2 {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(2, 1fr);
+		grid-column-gap: 10px;
+		grid-row-gap: 10px;
+	}
+
+	.radio-display .col-span-4 {
+		grid-column: span 4;
+	}
+
 	.radio-display .section-item {
 		display: flex;
 		flex-direction: column;
@@ -101,11 +113,17 @@
 		border: 16px solid #f3f3f3;
 		border-radius: 50%;
 		border-top: 16px solid #3498db;
-		width: 120px;
-		height: 120px;
+		width: 60px;
+		height: 60px;
 		-webkit-animation: spin 2s linear infinite;
 		/* Safari */
 		animation: spin 2s linear infinite;
+	}
+
+	.loader-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
 
@@ -127,94 +145,6 @@
 		<div class="row mt--2">
 			<div class="col-md-12">
 				<div class="card full-height">
-					<div class="card-body">
-						<div class="card-title">Status Information</div>
-						<div class="card-category">Daily information about statistics in system</div>
-						<div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
-							<div class="col-sm-6 col-md-3">
-								<div class="card card-stats card-primary card-round">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="flaticon-interface-4"></i>
-												</div>
-											</div>
-											<div class="col-7 col-stats">
-												<div class="numbers">
-													<p class="card-category">Channel</p>
-													<h4 class="card-title" id="channel_info"></h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-md-3">
-								<div class="card card-stats card-danger card-round">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="flaticon-interface-6"></i>
-												</div>
-											</div>
-											<div class="col-7 col-stats">
-												<div class="numbers">
-													<p class="card-category">TX Frequency</p>
-													<h4 class="card-title" id="txfreq_info"></h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-md-3">
-								<div class="card card-stats card-success card-round">
-									<div class="card-body ">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="flaticon-imac"></i>
-												</div>
-											</div>
-											<div class="col-7 col-stats">
-												<div class="numbers">
-													<p class="card-category">RX Frequency</p>
-													<h4 class="card-title" id="rxfreq_info"></h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-md-3">
-								<div class="card card-stats card-secondary card-round">
-									<div class="card-body ">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="flaticon-power"></i>
-												</div>
-											</div>
-											<div class="col-7 col-stats">
-												<div class="numbers">
-													<p class="card-category">Output Power</p>
-													<h4 class="card-title" id="outputpower_info"></h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8">
-				<div class="card">
 					<div class="card-header">
 						<div class="card-head-row">
 							<div class="card-title">Radio List</div>
@@ -239,8 +169,8 @@
 								}
 							?>
 								<div>
-									<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>">
-										Radio <?= $type ?>
+									<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>">
+										Radio <?= $type; ?>
 										<span class="d-block">
 											<?= ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') ?>
 										</span>
@@ -248,8 +178,21 @@
 								</div>
 							<?php endforeach; ?>
 						</div>
-
-						<div id="radio-display" class="mt-4">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<div class="card-head-row">
+							<div class="card-title">Radio Details</div>
+							<!-- <button class="btn btn-primary mx-auto" data-toggle="modal" data-target="#modal_main">Change</button> -->
+						</div>
+					</div>
+					<div class="card-body w-100">
+						<div id="radio-display" class="">
 
 						</div>
 					</div>

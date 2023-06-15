@@ -4,48 +4,36 @@ class RadioDisplay {
 
 	constructor(
 		element,
-		{
-			id,
-			channel,
-			ip_address,
-			status,
-			rx_level,
-			power_level,
-			power,
-			sequelch,
-			remote,
-		}
+		radioNo,
+		{ id, channel, ip_address, status, rx_level, tx_level, power_level }
 	) {
 		this.radioElement = element;
 		this.data = {
 			id,
+			radioNo,
 			channel,
 			ip_address,
 			status,
 			rx_level,
+			tx_level,
 			power_level,
-			power,
-			sequelch,
-			remote,
 		};
 	}
 
 	radioTemplate({
 		id,
+		radioNo,
 		channel,
 		ip_address,
 		status,
 		rx_level,
+		tx_level,
 		power_level,
-		power,
-		sequelch,
-		remote,
-		type,
 	}) {
 		return `
 		<div class="radio-display">
 			<h2 class="title">
-				Radio ${type}
+				Radio ${radioNo}
 			</h2>
 			<h3 class="section-title my-2">
 				Radio Display
@@ -95,9 +83,9 @@ class RadioDisplay {
 							aria-valuenow="${rx_level}"
 							aria-valuemin="0"
 							aria-valuemax="100"
-							id="rx-level-bar-1"
+							id="rx-level-bar"
 						>
-							<span class="text-white" id="rx-level-value-1">
+							<span class="text-white" id="rx-level-value">
 								${rx_level}
 							</span>
 						</div>
@@ -117,13 +105,37 @@ class RadioDisplay {
 						<div
 							class="progress-bar bg-danger"
 							role="progressbar"
+							style="height: ${tx_level}%"
+							aria-valuenow="${tx_level}"
+							aria-valuemin="0"
+							aria-valuemax="100"
+							id="tx-level-bar"
+						>
+							<span class="text-white" id="tx-level-value">${tx_level}</span>
+						</div>
+					</div>
+					<p
+						class="section-item-desc"
+					>
+						TX Level
+					</p>
+				</div>
+				<div
+					class="section-item py-2"
+				>
+					<div
+						class="bar-wrapper"
+					>
+						<div
+							class="progress-bar bg-danger"
+							role="progressbar"
 							style="height: ${power_level}%"
 							aria-valuenow="${power_level}"
 							aria-valuemin="0"
 							aria-valuemax="100"
-							id="power-level-bar-1"
+							id="power-level-bar"
 						>
-							<span class="text-white" id="power-level-value-1">${power_level}</span>
+							<span class="text-white" id="power-level-value">${power_level}</span>
 						</div>
 					</div>
 					<p
@@ -132,66 +144,15 @@ class RadioDisplay {
 						Power Level
 					</p>
 				</div>
-				<div
-					class="section-item py-2"
-				>
-					<div>
-						<p
-							class="section-item-desc"
-						>
-							Power
-						</p>
-
-						<div
-							class="px-7 py-2 rounded ${
-								power == "1" ? "bg-success" : "bg-danger"
-							} text-white"
-							id="power-squelch"
-						>
-							${power == "1" ? "ON" : "OFF"}
-						</div>
-					</div>
-					<div>
-						<p
-							class="section-item-desc"
-						>
-							Squelch
-						</p>
-
-						<div
-							class="px-7 py-2 rounded ${
-								sequelch == "1" ? "bg-success" : "bg-danger"
-							} text-white"
-							id="power-squelch"
-						>
-							${sequelch == "1" ? "ON" : "OFF"}
-						</div>
-					</div>
-					<div>
-						<p
-							class="section-item-desc"
-						>
-							Remote
-						</p>
-
-						<div
-							class="px-7 py-2 rounded ${
-								remote == "1" ? "bg-success" : "bg-danger"
-							} text-white"
-						>
-							${remote == "1" ? "ON" : "OFF"}
-						</div>
-					</div>
-				</div>
 			</div>
 
-			<h3 class="text-sm text-slate-500 font-semibold uppercase my-2">
+			<h3 class="section-title my-2">
 				Radio Control
 			</h3>
 
-			<div class="grid grid-cols-5 grid-rows-2 gap-2">
+			<div class="section-2">
 				<div
-					class="flex items-center justify-around flex-col gap-2 outline outline-1 px-2"
+					class="section-item px-2"
 				>
 					<p
 						class="section-item-desc"
@@ -199,185 +160,127 @@ class RadioDisplay {
 						Channel No
 					</p>
 
-					<select
-						name="channel-no"
-						id="channel-no"
-						class="py-1 px-4 pr-9 block bg-slate-200 border w-full rounded-full mb-2"
-					>
-						<option selected disabled>Select Channel</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-					</select>
+					<form id="channel-form" class="d-flex w-100" style="gap: 0.5rem;">
+						<input
+							type="number"
+							class="form-control"
+							id="channel-input"
+							value="${channel}"
+							placeholder="Enter Channel Number"
+						/>
+						<button class="btn btn-sm btn-primary" type="submit">
+							SET
+						</button>
+					</form>
 				</div>
 				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 px-2"
+					class="section-item px-2"
 				>
 					<p
 						class="section-item-desc"
 					>
-						Power
+						Power Reduction
 					</p>
 
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
+					<form id="power-reduction-form w-100" class="d-flex" style="gap: 0.5rem;">
+						<select
+							class="form-control"
+							id="power-reduction-input"
+							placeholder="Select Power Reduction Value"
+						>
+							<option value="0">0%</option>
+							<option value="25">25%</option>
+							<option value="50">50%</option>
+							<option value="75">75%</option>
+							<option value="100">100%</option>
+						</select>
+						<button class="btn btn-sm btn-primary" type="submit">
+							SET
+						</button>
+					</form>
 				</div>
 				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 px-2"
+					class="section-item px-2"
 				>
 					<p
 						class="section-item-desc"
 					>
-						TX Power
+						SQ Select
 					</p>
 
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
+					<form id="sq-select-form" class="d-flex w-100" style="gap: 0.5rem;">
+						<select
+							class="form-control"
+							id="sq-select-input"
+							placeholder="Select SQ Value"
+						>
+							<option value="0">0</option>
+							<option value="1">1</option>
+						</select>
+						<button class="btn btn-sm btn-primary" type="submit">
+							SET
+						</button>
+					</form>
 				</div>
 				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 px-2"
+					class="section-item px-2"
 				>
 					<p
 						class="section-item-desc"
 					>
-						Selt Test
+						Set SQ Level
 					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
+					
+					<form id="sq-level-form" class="d-flex w-100" style="gap: 0.5rem;">
+						<input type="hidden" id="radio_id" value="${id}" />
+						<input
+							type="number"
+							class="form-control"
+							id="sq-level-input"
+							placeholder="Enter SQ Level"
+						/>
+						<button class="btn btn-sm btn-primary" type="submit">
+							SET
+						</button>
+					</form>
 				</div>
 				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 px-2"
+					class="section-item px-2"
 				>
 					<p
 						class="section-item-desc"
 					>
-						Squelch
+						Set SQ Up Limit
 					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
+					
+					<form id="sq-up-limit-form" class="d-flex w-100" style="gap: 0.5rem;">
+						<input
+							type="number"
+							class="form-control"
+							id="sq-up-limit-input"
+							placeholder="Enter SQ Up Limit"
+						/>
+						<button class="btn btn-sm btn-primary" type="submit">
+							SET
+						</button>
+					</form>
 				</div>
 				<div class="col-span-4"></div>
 				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 px-2"
+					class="section-item px-2"
 				>
 					<p
 						class="section-item-desc"
 					>
-						Ptt
+						Reset Alarm
 					</p>
 
 					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
+						class="btn btn-block btn-primary"
 						type="button"
+						id="btn-reset-alarm"
 					>
-						ON
-					</button>
-				</div>
-			</div>
-
-			<h3 class="text-sm text-slate-500 font-semibold uppercase my-2">
-				Radio Alarm Status
-			</h3>
-
-			<div class="grid grid-cols-5 grid-rows-1 gap-2">
-				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 p-2"
-				>
-					<p
-						class="section-item-desc"
-					>
-						tx unlock
-					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
-				</div>
-				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 p-2"
-				>
-					<p
-						class="section-item-desc"
-					>
-						rx unlock
-					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
-				</div>
-				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 p-2"
-				>
-					<p
-						class="section-item-desc"
-					>
-						low power
-					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
-				</div>
-				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 p-2"
-				>
-					<p
-						class="section-item-desc"
-					>
-						over heat
-					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
-					</button>
-				</div>
-				<div
-					class="flex items-center justify-center gap-2 flex-col outline outline-1 p-2"
-				>
-					<p
-						class="section-item-desc"
-					>
-						selt test
-					</p>
-
-					<button
-						class="status-on px-3 py-1 rounded-md shadow focus:shadow-md uppercase"
-						type="button"
-					>
-						ON
+						RESET
 					</button>
 				</div>
 			</div>
@@ -385,6 +288,58 @@ class RadioDisplay {
 		`;
 	}
 }
+
+const formSubmit = (form, url, data, callback) => {
+	$(form).on("submit", function (event) {
+		event.preventDefault();
+
+		$.ajax({
+			url: url,
+			type: "POST",
+			data: data,
+			dataType: "JSON",
+			success: function (result) {
+				if (result.status) {
+					callback(result);
+				} else {
+					notifError();
+				}
+			},
+			error: function () {
+				notifError();
+			},
+		});
+	});
+};
+
+const getRadioData = async (id, callback) => {
+	await $.ajax({
+		url: "main/get_radio",
+		data: {
+			id: id,
+		},
+		type: "POST",
+		dataType: "JSON",
+		success: function (result) {
+			if (result.status) {
+				callback(result);
+			} else {
+				notifError();
+			}
+		},
+		error: function () {
+			notifError();
+		},
+	});
+};
+
+const loader = (element) => {
+	element.html(`
+		<div class="loader-wrapper">
+			<div class="loader"></div>
+		</div>
+	`);
+};
 
 $(document).ready(function () {
 	$(".form-control").change(function () {
@@ -394,28 +349,40 @@ $(document).ready(function () {
 
 	const radioDisplay = $("#radio-display");
 
-	$(document).on("click", "#btn-vhf", function () {
+	loader(radioDisplay);
+
+	getRadioData(1, function (result) {
+		const radio = new RadioDisplay(radioDisplay, "VHF 1", result.data);
+		const html = radio.radioTemplate(radio.data);
+		radio.radioElement.html(html);
+	});
+
+	$(document).on("click", "#btn-vhf", async function () {
 		const id = $(this).data("id");
+		const radioNo = $(this).data("radio-no");
 
-		radioDisplay.html(`<div class="loader"></div>`);
+		loader(radioDisplay);
 
-		$.ajax({
-			url: "main/get_radio",
-			type: "POST",
-			data: {
-				id: id,
-			},
-			dataType: "JSON",
-			success: function (result) {
-				if (result.status) {
-					console.log(result.data);
-					const radio = new RadioDisplay(radioDisplay, result.data);
-					const html = radio.radioTemplate(radio.data);
-					radio.radioElement.html(html);
-				} else {
-					notifError();
+		await getRadioData(id, function (result) {
+			const radio = new RadioDisplay(radioDisplay, radioNo, result.data);
+			const html = radio.radioTemplate(radio.data);
+			radio.radioElement.html(html);
+
+			formSubmit(
+				"#sq-level-form",
+				"api/sq_level",
+				{
+					sq_level: $("#sq-level-input").val(),
+					radio_id: $("#radio_id").val(),
+				},
+				function (result) {
+					$("#sq-level-bar")
+						.css("height", `${result.data.sq_level}%`)
+						.attr("aria-valuenow", result.data.sq_level);
+
+					$("#sq-level-value").html(`${result.data.sq_level}`);
 				}
-			},
+			);
 		});
 	});
 });
