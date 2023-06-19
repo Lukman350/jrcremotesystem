@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 05:20 PM
+-- Generation Time: Jun 19, 2023 at 03:42 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -56,22 +56,30 @@ INSERT INTO `auth_tb_user` (`id`, `nama_lengkap`, `username`, `password`, `email
 CREATE TABLE `radio` (
   `id` int(11) NOT NULL,
   `ip_address` varchar(24) NOT NULL DEFAULT '255.255.255.255',
+  `type` varchar(11) NOT NULL DEFAULT 'VHF',
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `channel` int(24) NOT NULL DEFAULT 0,
-  `rx_level` int(32) NOT NULL DEFAULT 0,
-  `power_level` int(32) NOT NULL DEFAULT 0,
-  `power` tinyint(1) NOT NULL,
-  `squelch` int(11) NOT NULL DEFAULT 0,
-  `remote` tinyint(1) NOT NULL DEFAULT 0
+  `rx_level` int(24) NOT NULL DEFAULT 0,
+  `tx_level` int(24) NOT NULL DEFAULT 0,
+  `power_level` int(24) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `radio`
 --
 
-INSERT INTO `radio` (`id`, `ip_address`, `status`, `channel`, `rx_level`, `power_level`, `power`, `squelch`, `remote`) VALUES
-(1, '255.255.255.255', 0, 16, 50, 20, 1, 2, 1),
-(2, '127.0.0.1', 1, 24, 70, 40, 1, 2, 1);
+INSERT INTO `radio` (`id`, `ip_address`, `type`, `status`, `channel`, `rx_level`, `tx_level`, `power_level`) VALUES
+(1, '192.168.101.101', 'VHF', 0, 16, 50, 0, 20),
+(2, '192.168.101.102', 'VHF', 1, 24, 70, 0, 40),
+(3, '192.168.101.103', 'VHF', 0, 20, 50, 0, 20),
+(4, '192.168.101.104', 'VHF', 1, 10, 70, 0, 40),
+(5, '192.168.101.26', 'NAVTEK', 0, 6, 50, 0, 20),
+(6, '192.168.101.151', 'HF', 1, 70, 70, 0, 0),
+(7, '192.168.101.152', 'HF', 0, 2, 50, 0, 0),
+(8, '192.168.101.153', 'HF', 1, 1, 70, 0, 40),
+(9, '192.168.101.154', 'HF', 0, 31, 50, 0, 20),
+(10, '192.168.101.155', 'HF', 1, 17, 70, 0, 40),
+(11, '192.168.101.156', 'HF', 1, 82, 70, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -132,7 +140,7 @@ ALTER TABLE `auth_tb_user`
 -- AUTO_INCREMENT for table `radio`
 --
 ALTER TABLE `radio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
