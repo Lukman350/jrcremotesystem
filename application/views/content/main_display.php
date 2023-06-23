@@ -22,6 +22,7 @@
 		display: grid;
 		padding: 1rem;
 		border: 1px solid #4b4b4b;
+		overflow: auto;
 	}
 
 	.radio-display .title {
@@ -142,9 +143,9 @@
 		</div>
 	</div>
 	<div class="page-inner mt--5">
-		<div class="row mt--2">
-			<div class="col-md-12">
-				<div class="card full-height">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="card">
 					<div class="card-header">
 						<div class="card-head-row">
 							<div class="card-title">Radio List</div>
@@ -154,45 +155,52 @@
 					<div class="card-body w-100">
 						<div class="content-wrapper">
 							<?php
+							$count = 0;
+							foreach ($response as $data) :
+								if ($data['status'] == false) {
+									echo "<script>notifError();</script>";
+									break;
+								}
+								$data_radio = $data['data'];
+								$count = $count += 1;
+							?>
+								<div>
+									<button type="button" id="btn-vhf" data-id="" data-radio-no="" class="w-100" data-toggle="modal" data-target="#radio_modal">
+										<?= $data_radio[$count]['username'] ?>
+										<span class="d-block">
+											<?= $data_radio[$count]['email'] ?> </span>
+									</button>
+								</div>
+							<?php endforeach;
+							?>
+
+							<?php
+							/*
 							$countVHF = 0;
 							$countHF = 0;
 							foreach ($radio_data as $radio) :
-								$type = "";
-								if ($radio['type'] == "VHF") {
-									$countVHF = $countVHF += 1;
-									$type = "VHF " . $countVHF;
-								} else if ($radio['type'] == "HF") {
-									$countHF = $countHF += 1;
-									$type = "HF " . $countHF;
-								} else {
-									$type = "NAVTEK 1";
-								}
+							$type = "";
+							if ($radio['type'] == "VHF") {
+							$countVHF = $countVHF += 1;
+							$type = "VHF " . $countVHF;
+							} else if ($radio['type'] == "HF") {
+							$countHF = $countHF += 1;
+							$type = "HF " . $countHF;
+							} else {
+							$type = "NAVTEK 1";
+							}
+							*/
+
 							?>
-								<div>
-									<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>">
-										Radio <?= $type; ?>
-										<span class="d-block">
-											<?= ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') ?>
-										</span>
-									</button>
-								</div>
-							<?php endforeach; ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8">
-				<div class="card">
-					<div class="card-header">
-						<div class="card-head-row">
-							<div class="card-title">Radio Details</div>
-							<!-- <button class="btn btn-primary mx-auto" data-toggle="modal" data-target="#modal_main">Change</button> -->
-						</div>
-					</div>
-					<div class="card-body w-100">
-						<div id="radio-display" class="">
+
+							<!-- <div>
+								<button type="button" id="btn-vhf" data-id="//$radio['id']" data-radio-no="<//$type " class="w-100 //($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger')" data-toggle="modal" data-target="#radio_modal">
+									Radio // $type;
+									<span class="d-block">
+										// ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF')
+									</span>
+								</button>
+							</div> -->
 
 						</div>
 					</div>
@@ -233,5 +241,6 @@
 		</div>
 	</div>
 </div>
-<!-- BAGONG -->
+
 <?= $modal ?>
+<?= $radio_modal ?>

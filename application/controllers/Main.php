@@ -2,20 +2,18 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
 
 class Main extends CI_Controller
 {
+	private $_client = [];
 
-	private $_client;
+	public $radioData = [];
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->_client = new Client([
-			'base_uri'  => 'http://192.168.1.100/',
-			'auth'  	=> ['root', '/admin/']
-		]);
-
 		$this->load->model('M_Radio', 'radio');
 	}
 
@@ -24,7 +22,27 @@ class Main extends CI_Controller
 		$data['title'] 			= 'JRC Remote System';
 		$data['JS'] 			= 'main_display.js';
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
-		$data['radio_data'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
+		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);
+		$data['radio'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
+		$data['test'] = [
+			[
+				'id' => 0,
+				'ip_address' => 'https://fakestoreapi.com'
+			],
+			[
+				'id' => 1,
+				'ip_address' => 'https://jsonplaceholder.typicode.com'
+			]
+		];
+
+		$radio_length = count($data['test']);
+
+		$response = [];
+		for ($i = 0; $i < $radio_length; $i++) {
+			$response[$i] = $this->_getRadioFromAPI($data['test'][$i]['id'], $data['test'][$i]['ip_address']);
+		}
+
+		$data['response'] = $response;
 
 		$page['sidebar'] 		= $this->load->view('templates/sidebar', $data, TRUE);
 		$page['content'] 		= $this->load->view('content/main_display', $data, TRUE);
@@ -32,9 +50,43 @@ class Main extends CI_Controller
 		$this->load->view('templates/layout', $page);
 	}
 
+	private function _getRadioFromAPI($radio_id, $ip_address)
+	{
+		$this->_client[$radio_id] = new Client([
+			'base_uri'  => $ip_address,
+			// 'auth'  	=> ['root', '/admin/']
+		]);
+
+		try {
+			$this->radioData[$radio_id] = $this->_client[$radio_id]->request('GET', '/users');
+
+			$code = $this->radioData[$radio_id]->getStatusCode();
+			$body = $this->radioData[$radio_id]->getBody()->getContents();
+
+			if ($code == 200) {
+				$notif_data = [
+					'status'  => TRUE,
+					'message' => 'Radio data found',
+					'data'    => json_decode($body, TRUE)
+				];
+			} else {
+				$notif_data = [
+					'status'  => FALSE,
+					'message' => 'Radio data not found'
+				];
+			}
+
+			return $notif_data;
+		} catch (ClientException $e) {
+			echo Psr7\Message::toString($e->getRequest());
+			echo Psr7\Message::toString($e->getResponse());
+		}
+	}
+
 	public function get_radio()
 	{
 		$radio_id = $_POST['id'];
+		$ip_address = $_POST['ip_address'];
 
 		if (!isset($radio_id)) {
 			$notif_data = [
@@ -138,7 +190,7 @@ class Main extends CI_Controller
 	public function action_get()
 	{
 		$arrbar   = array();
-		$response = $this->_client->request('GET', 'status_get.cgi');
+		$response = $this->_client[1]->request('GET', 'status_get.cgi');
 
 		$expresponse = explode(",", $response->getBody()->getContents());
 
