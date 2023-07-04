@@ -24,22 +24,13 @@ class Main extends CI_Controller
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
 		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);
 		$data['radio'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
-		$data['test'] = [
-			[
-				'id' => 0,
-				'ip_address' => 'https://fakestoreapi.com'
-			],
-			[
-				'id' => 1,
-				'ip_address' => 'https://jsonplaceholder.typicode.com'
-			]
-		];
+		$api_url = 'https://jsonplaceholder.typicode.com';
 
-		$radio_length = count($data['test']);
+		$radio_length = 11;
 
 		$response = [];
-		for ($i = 0; $i < $radio_length; $i++) {
-			$response[$i] = $this->_getRadioFromAPI($data['test'][$i]['id'], $data['test'][$i]['ip_address']);
+		for ($i = 1; $i <= $radio_length; $i++) {
+			$response[$i] = $this->_getRadioFromAPI($i, $api_url);
 		}
 
 		$data['response'] = $response;
@@ -52,16 +43,21 @@ class Main extends CI_Controller
 
 	private function _getRadioFromAPI($radio_id, $ip_address)
 	{
-		$this->_client[$radio_id] = new Client([
-			'base_uri'  => $ip_address,
-			// 'auth'  	=> ['root', '/admin/']
-		]);
+		// $this->_client[$radio_id] = new Client([
+		// 	'base_uri'  => $ip_address,
+		// 	// 'auth'  	=> ['root', '/admin/']
+		// ]);
 
 		try {
-			$this->radioData[$radio_id] = $this->_client[$radio_id]->request('GET', '/users');
+			// $this->radioData[$radio_id] = $this->_client[$radio_id]->request('GET', '/users');
+			$client = new GuzzleHttp\Client();
+			$response = $client->request('GET', $ip_address . '/comments/' . $radio_id);
 
-			$code = $this->radioData[$radio_id]->getStatusCode();
-			$body = $this->radioData[$radio_id]->getBody()->getContents();
+			// $code = $this->radioData[$radio_id]->getStatusCode();
+			// $body = $this->radioData[$radio_id]->getBody()->getContents();
+
+			$code = $response->getStatusCode();
+			$body = $response->getBody()->getContents();
 
 			if ($code == 200) {
 				$notif_data = [

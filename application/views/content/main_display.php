@@ -155,7 +155,7 @@
 					<div class="card-body w-100">
 						<div class="content-wrapper">
 							<?php
-							$count = 0;
+							$count = 1;
 							foreach ($response as $data) :
 								if ($data['status'] == false) {
 									echo "<script>notifError();</script>";
@@ -166,9 +166,11 @@
 							?>
 								<div>
 									<button type="button" id="btn-vhf" data-id="" data-radio-no="" class="w-100" data-toggle="modal" data-target="#radio_modal">
-										<?= $data_radio[$count]['username'] ?>
+										<?= //$data_radio['username']
+										var_dump($data_radio)
+										?>
 										<span class="d-block">
-											<?= $data_radio[$count]['email'] ?> </span>
+											<!-- <?= $data_radio['email'] ?> </span> -->
 									</button>
 								</div>
 							<?php endforeach;
