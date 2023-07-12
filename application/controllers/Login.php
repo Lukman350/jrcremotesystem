@@ -33,7 +33,7 @@ class Login extends CI_Controller
 			//login
 			$datauser = $this->auth->datauser($username);
 
-			if($datauser['status_user'] == 1):
+			if ($datauser['status_user'] == 1) :
 				$session  = [
 					'id'       	  => $datauser['id'],
 					'username'    => $datauser['username'],
@@ -51,7 +51,7 @@ class Login extends CI_Controller
 					'message' => 'Login is successfully'
 				);
 				echo json_encode($datanotif);
-			else:
+			else :
 				$datanotif = array(
 					'status'  		=> FALSE,
 					'title'   		=> 'Failed!',
@@ -81,14 +81,14 @@ class Login extends CI_Controller
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		
+
 		$datanotif = array(
-					'status'  => TRUE,
-					'title'   => 'Success!',
-					'type'	  => 'success',
-					'icon' 	  => 'flaticon-success',
-					'message' => 'Logout is successfully'
-				);
+			'status'  => TRUE,
+			'title'   => 'Success!',
+			'type'	  => 'success',
+			'icon' 	  => 'flaticon-success',
+			'message' => 'Logout is successfully'
+		);
 		echo json_encode($datanotif);
 	}
 

@@ -23,17 +23,17 @@ class Main extends CI_Controller
 		$data['JS'] 			= 'main_display.js';
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
 		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);
-		$data['radio'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
-		$api_url = 'https://jsonplaceholder.typicode.com';
+		$data['radio_data'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
+		// $api_url = 'https://jsonplaceholder.typicode.com';
 
-		$radio_length = 11;
+		// $radio_length = 11;
 
-		$response = [];
-		for ($i = 1; $i <= $radio_length; $i++) {
-			$response[$i] = $this->_getRadioFromAPI($i, $api_url);
-		}
+		// $response = [];
+		// for ($i = 1; $i <= $radio_length; $i++) {
+		// 	$response[$i] = $this->_getRadioFromAPI($i, $api_url);
+		// }
 
-		$data['response'] = $response;
+		// $data['response'] = $response;
 
 		$page['sidebar'] 		= $this->load->view('templates/sidebar', $data, TRUE);
 		$page['content'] 		= $this->load->view('content/main_display', $data, TRUE);
@@ -82,7 +82,7 @@ class Main extends CI_Controller
 	public function get_radio()
 	{
 		$radio_id = $_POST['id'];
-		$ip_address = $_POST['ip_address'];
+		$ip_address = isset($_POST['ip_address']);
 
 		if (!isset($radio_id)) {
 			$notif_data = [

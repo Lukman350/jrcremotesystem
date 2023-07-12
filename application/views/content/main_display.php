@@ -1,7 +1,7 @@
 <style>
 	.content-wrapper {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		grid-template-rows: repeat(3, 1fr);
 		grid-column-gap: 10px;
 		grid-row-gap: 10px;
@@ -23,6 +23,7 @@
 		padding: 1rem;
 		border: 1px solid #4b4b4b;
 		overflow: auto;
+		position: relative;
 	}
 
 	.radio-display .title {
@@ -34,14 +35,25 @@
 	.radio-display .section-title {
 		font-size: 1.2rem;
 		text-transform: uppercase;
+		position: relative;
+		top: 1.4rem;
+		left: 1rem;
+		background-color: #fff;
+		width: fit-content;
 	}
 
-	.radio-display .section {
+	.radio-display .section-container {
+		position: relative;
+	}
+
+	.radio-display .section-1 {
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
 		grid-template-rows: repeat(1, 1fr);
 		grid-column-gap: 10px;
 		grid-row-gap: 10px;
+		border: 1px solid #4b4b4b;
+		padding: 1rem;
 	}
 
 	.radio-display .section-2 {
@@ -50,6 +62,13 @@
 		grid-template-rows: repeat(2, 1fr);
 		grid-column-gap: 10px;
 		grid-row-gap: 10px;
+		border: 1px solid #4b4b4b;
+		padding: 2rem 1rem;
+	}
+
+	.radio-display .section-3 {
+		padding: 1.5rem;
+		border: 1px solid #4b4b4b;
 	}
 
 	.radio-display .col-span-4 {
@@ -61,9 +80,10 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 1rem;
-		min-height: 130px;
+		column-gap: 5rem;
+		min-height: 100px;
 		border: 1px solid #4b4b4b;
+		position: relative;
 	}
 
 	.radio-display .section-item .section-item-title {
@@ -73,11 +93,23 @@
 	}
 
 	.radio-display .section-item .section-item-desc {
-		/* text-sm text-center text-slate-500 font-semibold uppercase */
 		font-size: 1rem;
 		text-transform: uppercase;
 		font-weight: semi-bold;
 		text-align: center;
+	}
+
+	.radio-display .section-1 .section-item-desc {
+		font-weight: bold;
+	}
+
+	.radio-display .section-2 .section-item-desc {
+		position: absolute;
+		top: -1rem;
+		left: 10px;
+		width: fit-content;
+		background-color: #fff;
+		height: fit-content;
 	}
 
 	.radio-display .p-9 {
@@ -107,6 +139,11 @@
 	.radio-display .px-7 {
 		padding-left: 1.75rem;
 		padding-right: 1.75rem;
+	}
+
+	.bg-green {
+		background-color: #B5C668;
+		color: #00ff00;
 	}
 
 	/* make a loader */
@@ -144,7 +181,7 @@
 	</div>
 	<div class="page-inner mt--5">
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col">
 				<div class="card">
 					<div class="card-header">
 						<div class="card-head-row">
@@ -155,87 +192,52 @@
 					<div class="card-body w-100">
 						<div class="content-wrapper">
 							<?php
-							$count = 1;
-							foreach ($response as $data) :
-								if ($data['status'] == false) {
-									echo "<script>notifError();</script>";
-									break;
-								}
-								$data_radio = $data['data'];
-								$count = $count += 1;
+							// $count = 1;
+							// foreach ($response as $data) :
+							// 	if ($data['status'] == false) {
+							// 		echo "<script>notifError();</script>";
+							// 		break;
+							// 	}
+							// 	$data_radio = $data['data'];
+							// 	$count = $count += 1;
 							?>
-								<div>
+							<!-- <div>
 									<button type="button" id="btn-vhf" data-id="" data-radio-no="" class="w-100" data-toggle="modal" data-target="#radio_modal">
 										<?= //$data_radio['username']
 										var_dump($data_radio)
 										?>
 										<span class="d-block">
-											<!-- <?= $data_radio['email'] ?> </span> -->
-									</button>
-								</div>
-							<?php endforeach;
+											<!-- < $data_radio['email'] ?> </span> -->
+							<!-- </button> -->
+							<!-- </div> -->
+							<?php // endforeach; 
 							?>
 
 							<?php
-							/*
 							$countVHF = 0;
 							$countHF = 0;
 							foreach ($radio_data as $radio) :
-							$type = "";
-							if ($radio['type'] == "VHF") {
-							$countVHF = $countVHF += 1;
-							$type = "VHF " . $countVHF;
-							} else if ($radio['type'] == "HF") {
-							$countHF = $countHF += 1;
-							$type = "HF " . $countHF;
-							} else {
-							$type = "NAVTEK 1";
-							}
-							*/
-
+								$type = "";
+								if ($radio['type'] == "VHF") {
+									$countVHF = $countVHF += 1;
+									$type = "VHF " . $countVHF;
+								} else if ($radio['type'] == "HF") {
+									$countHF = $countHF += 1;
+									$type = "HF " . $countHF;
+								} else {
+									$type = "NAVTEK 1";
+								}
 							?>
 
-							<!-- <div>
-								<button type="button" id="btn-vhf" data-id="//$radio['id']" data-radio-no="<//$type " class="w-100 //($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger')" data-toggle="modal" data-target="#radio_modal">
-									Radio // $type;
-									<span class="d-block">
-										// ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF')
-									</span>
-								</button>
-							</div> -->
-
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-md-4">
-				<div class="card ">
-					<div class="card-header">
-						<div class="card-title">Alarms Information</div>
-					</div>
-					<div class="card-body pb-0">
-						<!-- <?php date_default_timezone_set('Asia/Jakarta'); ?>
-						<div class="card-category"><?= date('Y/m/d H:i:s') ?></div> -->
-
-						<div class="row mt-2">
-							<div class="col">
-								<button class="btn btn-success btn-block mb-4" id="alm_RxUnitPsFail">RX UNIT PS FAIL</button>
-								<button class="btn btn-success btn-block mb-5" id="alm_RxPllUnlock">RX PLL UNLOCK</button>
-								<button class="btn btn-success btn-block mb-4" id="alm_TxUnitPsFail">TX UNIT PS FAIL</button>
-								<button class="btn btn-success btn-block mb-5" id="alm_TxOutputFail">TX OUTPUT FAIL</button>
-								<button class="btn btn-success btn-block mb-4" id="alm_TxPllUnlock">TX PLL UNLOCK</button>
-								<button class="btn btn-success btn-block mb-5" id="alm_PfPowerFail">PF POWER FAIL</button>
-							</div>
-							<div class="col">
-								<button class="btn btn-success btn-block mb-4" id="alm_PaUnitPsFail">PA UNIT PS FAIL</button>
-								<button class="btn btn-success btn-block mb-5" id="alm_PaTempFail">PA TEMP FAIL</button>
-								<button class="btn btn-success btn-block mb-4" id="alm_CtrlUnitPsFail">CTRL UNIT PS FAIL</button>
-								<button class="btn btn-success btn-block mb-5" id="alm_PsUnitFail">PS UNIT FAIL</button>
-								<button class="btn btn-success btn-block mb-4" id="alm_FanFail">FAN FAIL</button>
-								<button class="btn btn-success btn-block mb-5" id="alm_PaPowerFail">PR POWER FAIL</button>
-
-							</div>
+								<div>
+									<button type="button" id="btn-vhf" data-id="<?= $radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 <?= ($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') ?>" data-toggle="modal" data-target="#radio_modal">
+										Radio <?= $type; ?>
+										<span class="d-block">
+											<?= ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') ?>
+										</span>
+									</button>
+								</div>
+							<?php endforeach; ?>
 						</div>
 					</div>
 				</div>
