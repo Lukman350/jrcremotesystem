@@ -1,6 +1,6 @@
 class RadioDisplay {
 	radioElement;
-	data;
+	dataRadio;
 
 	constructor(
 		element,
@@ -8,7 +8,7 @@ class RadioDisplay {
 		{ id, channel, ip_address, status, rx_level, tx_level, power_level }
 	) {
 		this.radioElement = element;
-		this.data = {
+		this.dataRadio = {
 			id,
 			radioNo,
 			channel,
@@ -18,6 +18,10 @@ class RadioDisplay {
 			tx_level,
 			power_level,
 		};
+	}
+
+	set data({ key, value }) {
+		this.dataRadio[key] = value;
 	}
 
 	radioTemplate({
@@ -75,6 +79,14 @@ class RadioDisplay {
 					<div
 						class="section-item py-2"
 					>
+						<div class="line-wrapper">
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+						</div>
 						<div
 							class="bar-wrapper"
 						>
@@ -87,7 +99,7 @@ class RadioDisplay {
 								aria-valuemax="100"
 								id="rx-level-bar"
 							>
-								<span class="text-white" id="rx-level-value">
+								<span class="text-dark" id="rx-level-value" style="bottom: calc(75px + ${rx_level}px)">
 									${rx_level}
 								</span>
 							</div>
@@ -101,6 +113,14 @@ class RadioDisplay {
 					<div
 						class="section-item py-2"
 					>
+						<div class="line-wrapper">
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+						</div>
 						<div
 							class="bar-wrapper"
 						>
@@ -113,7 +133,7 @@ class RadioDisplay {
 								aria-valuemax="100"
 								id="tx-level-bar"
 							>
-								<span class="text-white" id="tx-level-value">${tx_level}</span>
+								<span class="text-dark" id="tx-level-value" style="bottom: calc(75px + ${tx_level}px)">${tx_level}</span>
 							</div>
 						</div>
 						<p
@@ -125,6 +145,14 @@ class RadioDisplay {
 					<div
 						class="section-item py-2"
 					>
+						<div class="line-wrapper">
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+							<div class="line-number"></div>
+						</div>
 						<div
 							class="bar-wrapper"
 						>
@@ -137,7 +165,7 @@ class RadioDisplay {
 								aria-valuemax="100"
 								id="power-level-bar"
 							>
-								<span class="text-white" id="power-level-value">${power_level}</span>
+								<span class="text-dark" id="power-level-value" style="bottom: calc(75px + ${power_level}px)">${power_level}</span>
 							</div>
 						</div>
 						<p
@@ -280,7 +308,7 @@ class RadioDisplay {
 						</p>
 
 						<button
-							class="btn btn-block btn-primary"
+							class="btn btn-sm btn-block btn-primary"
 							type="button"
 							id="btn-reset-alarm"
 						>
@@ -385,7 +413,7 @@ $(document).ready(function () {
 
 	getRadioData(1, function (result) {
 		const radio = new RadioDisplay(radioDisplay, "VHF 1", result.data);
-		const html = radio.radioTemplate(radio.data);
+		const html = radio.radioTemplate(radio.dataRadio);
 		radio.radioElement.html(html);
 	});
 
@@ -397,7 +425,7 @@ $(document).ready(function () {
 
 		await getRadioData(id, function (result) {
 			const radio = new RadioDisplay(radioDisplay, radioNo, result.data);
-			const html = radio.radioTemplate(radio.data);
+			const html = radio.radioTemplate(radio.dataRadio);
 			radio.radioElement.html(html);
 
 			formSubmit(
@@ -415,6 +443,36 @@ $(document).ready(function () {
 					$("#sq-level-value").html(`${result.data.sq_level}`);
 				}
 			);
+
+			$("#channel-form").on("submit", (event) => {
+				event.preventDefault();
+
+				const data = {
+					key: "channel",
+					value: $("#channel-input").val(),
+				};
+
+				radio.data = data;
+				$("#channel-number-1").html(data.value);
+				console.log(radio.dataRadio);
+			});
+
+			$("#power-reduction-form").on("submit", (event) => {
+				event.preventDefault();
+
+				const data = {
+					key: "power_level",
+					value: $("#power-reduction-input").val(),
+				};
+
+				radio.data = data;
+				$("#power-level-bar").css("height", `${data.value}%`);
+				$("#power-level-bar").attr("aria-valuenow", data.value);
+				$("#power-level-value").html(`${data.value}`);
+				$("#power-level-value").css("bottom", `calc(75px + ${data.value}px)`);
+
+				console.log("power-level", radio.dataRadio);
+			});
 		});
 	});
 });

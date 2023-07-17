@@ -121,7 +121,7 @@
 		flex-direction: column;
 		justify-content: flex-end;
 		flex-wrap: nowrap;
-		width: 3rem;
+		width: 5rem;
 		height: 8rem;
 		background-color: #e2e8f0;
 		border-radius: 0.25rem;
@@ -133,6 +133,31 @@
 		height: 100%;
 		text-align: center;
 		overflow: hidden;
+		transition: all 0.3s ease-in-out;
+	}
+
+	.radio-display .line-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		position: absolute;
+		top: 38px;
+	}
+
+	.radio-display #rx-level-value,
+	.radio-display #tx-level-value,
+	.radio-display #power-level-value {
+		position: absolute;
+		bottom: 75px;
+		right: 25px;
+		font-weight: bold;
+	}
+
+	.radio-display .line-number {
+		display: block;
+		height: 3px;
+		width: 2rem;
+		background-color: #4b4b4b;
 		transition: all 0.3s ease-in-out;
 	}
 
