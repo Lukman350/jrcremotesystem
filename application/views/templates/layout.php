@@ -133,7 +133,17 @@
 	<script src="<?= base_url() ?>vendor/atlantis-lite/assets/js/atlantis.min.js"></script>
 
 	<!-- Custom JS -->
-	<script src="<?= base_url() ?>assets/js/<?= $JS ?>"></script>
+	<?php
+	if (isset($JS)) {
+		if (is_array($JS)) {
+			foreach ($JS as $js) {
+				echo '<script src="' . base_url() . 'assets/js/' . $js . '"></script>';
+			}
+		} else {
+			echo '<script src="' . base_url() . 'assets/js/' . $JS . '"></script>';
+		}
+	}
+	?>
 	<script src="<?= base_url() ?>assets/js/get_status.js"></script>
 
 	<script>
