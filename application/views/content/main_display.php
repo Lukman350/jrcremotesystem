@@ -23,13 +23,39 @@
 		padding: 1rem;
 		border: 1px solid #4b4b4b;
 		overflow: auto;
-		position: relative;
+		background-color: #c0c0c0;
+		color: black;
 	}
 
 	.radio-display .title {
 		font-size: 1.5rem;
 		font-weight: bold;
 		text-transform: uppercase;
+		color: black;
+		position: absolute;
+		top: 0px;
+		left: 40px;
+		z-index: 22;
+	}
+
+	.radio-display .title::before {
+		content: "";
+		background-color: #fff;
+		display: block;
+		width: fit-content;
+		height: 1rem;
+		z-index: 20;
+		position: absolute;
+	}
+
+	.radio-display .title::after {
+		content: "";
+		background-color: #fff;
+		display: block;
+		width: fit-content;
+		height: 1rem;
+		z-index: 20;
+		position: absolute;
 	}
 
 	.radio-display .section-title {
@@ -38,7 +64,7 @@
 		position: relative;
 		top: 1.4rem;
 		left: 1rem;
-		background-color: #fff;
+		background-color: #c0c0c0;
 		width: fit-content;
 	}
 
@@ -81,9 +107,10 @@
 		justify-content: center;
 		align-items: center;
 		column-gap: 5rem;
-		min-height: 100px;
+		min-height: max-content;
 		border: 1px solid #4b4b4b;
 		position: relative;
+		padding: 1rem 0;
 	}
 
 	.radio-display .section-item .section-item-title {
@@ -97,6 +124,8 @@
 		text-transform: uppercase;
 		font-weight: semi-bold;
 		text-align: center;
+		margin: 0;
+		padding: 0;
 	}
 
 	.radio-display .section-1 .section-item-desc {
@@ -108,7 +137,7 @@
 		top: -1rem;
 		left: 10px;
 		width: fit-content;
-		background-color: #fff;
+		background-color: #c0c0c0;
 		height: fit-content;
 	}
 
@@ -141,7 +170,7 @@
 		flex-direction: column;
 		gap: 1rem;
 		position: absolute;
-		top: 38px;
+		top: 52px;
 	}
 
 	.radio-display #rx-level-value,
@@ -169,6 +198,12 @@
 	.bg-green {
 		background-color: #B5C668;
 		color: #00ff00;
+	}
+
+	.btn-custom {
+		background-color: #7E8A44;
+		color: #00ff00;
+		text-transform: uppercase;
 	}
 
 	/* make a loader */

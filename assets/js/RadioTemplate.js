@@ -11,11 +11,12 @@ const getRadioTemplates = (data) => {
 	} = data;
 
 	return `
+  
   <div class="radio-display">
     <h2 class="title">
       Radio ${radioNo}
     </h2>
-
+    
     <div class="section-container">
       <h3 class="section-title my-2">
         Radio Display
@@ -103,38 +104,6 @@ const getRadioTemplates = (data) => {
             <div
               class="progress-bar bg-danger"
               role="progressbar"
-              style="height: ${tx_level}%"
-              aria-valuenow="${tx_level}"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              id="tx-level-bar"
-            >
-              <span class="text-dark" id="tx-level-value" style="bottom: calc(75px + ${tx_level}px)">${tx_level}</span>
-            </div>
-          </div>
-          <p
-            class="section-item-desc"
-          >
-            TX Level
-          </p>
-        </div>
-        <div
-          class="section-item py-2"
-        >
-          <div class="line-wrapper">
-            <div class="line-number"></div>
-            <div class="line-number"></div>
-            <div class="line-number"></div>
-            <div class="line-number"></div>
-            <div class="line-number"></div>
-            <div class="line-number"></div>
-          </div>
-          <div
-            class="bar-wrapper"
-          >
-            <div
-              class="progress-bar bg-danger"
-              role="progressbar"
               style="height: ${power_level}%"
               aria-valuenow="${power_level}"
               aria-valuemin="0"
@@ -149,6 +118,54 @@ const getRadioTemplates = (data) => {
           >
             Power Level
           </p>
+        </div>
+        <div
+          class="section-item py-2"
+        >
+          <div>
+            <p
+              class="section-item-desc"
+            >
+              Power
+            </p>
+
+            <button
+              class="btn btn-custom"
+              type="button"
+              id="power-squelch-1"
+            >
+              ON
+            </button>
+          </div>
+          <div>
+            <p
+              class="section-item-desc"
+            >
+              Squelch
+            </p>
+
+            <button
+              class="btn btn-custom"
+              type="button"
+              id="power-squelch-1"
+            >
+              ON
+            </button>
+          </div>
+          <div>
+            <p
+              class="section-item-desc"
+            >
+              Remote
+            </p>
+
+            <button
+              class="btn btn-custom"
+              type="button"
+            >
+              remote
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -168,22 +185,17 @@ const getRadioTemplates = (data) => {
             Channel No
           </p>
 
-          <form id="channel-form" class="d-flex flex-column w-100" style="gap: 0.5rem;">
-            <input
-              type="number"
-              class="form-control"
-              id="channel-input"
-              value="${channel}"
-              placeholder="Enter Channel Number"
-              required
-            />
-            <button class="btn btn-sm btn-primary" type="submit">
-              SET
-            </button>
-          </form>
+          <input
+            type="number"
+            class="form-control"
+            id="channel-input"
+            value="${channel}"
+            placeholder="Enter Channel Number"
+            required
+          />
         </div>
         <div
-          class="section-item px-2"
+          class="section-item"
         >
           <p
             class="section-item-desc"
@@ -191,63 +203,39 @@ const getRadioTemplates = (data) => {
             Power
           </p>
 
-          <form id="power-reduction-form" class="d-flex flex-column w-100" style="gap: 0.5rem;">
-            <select
-              class="form-control"
-              id="power-reduction-input"
-              placeholder="Select Power Reduction Value"
-              required
-            >
-              <option value="0">0%</option>
-              <option value="25">25%</option>
-              <option value="50">50%</option>
-              <option value="75">75%</option>
-              <option value="100">100%</option>
-            </select>
-            <button class="btn btn-sm btn-primary" type="submit">
-              SET
-            </button>
-          </form>
+          <button class="btn btn-custom" id="power-btn" type="button">
+            ${power_level == "1" ? "ON" : "OFF"}
+          </button>
         </div>
         <div
-          class="section-item px-2"
-        >
-          <p
-            class="section-item-desc"
-          >
-            RX Power
-          </p>
-
-          <form id="rx-power-form" class="d-flex flex-column w-100" style="gap: 0.5rem;">
-            <input type="number" class="form-control" id="rx-power-input" required />
-            <button class="btn btn-sm btn-primary" type="submit">
-              SET
-            </button>
-          </form>
-        </div>
-        <div
-          class="section-item px-2"
+          class="section-item"
         >
           <p
             class="section-item-desc"
           >
             TX Power
           </p>
+
+          <button class="btn btn-custom" id="tx-power-btn">
+            ${tx_level > "0" ? "RATED" : "OFF"}
+          </button>
+        </div>
+        <div
+          class="section-item"
+        >
+          <p
+            class="section-item-desc"
+          >
+            Selt Test
+          </p>
           
-          <form id="tx-power-form" class="d-flex flex-column w-100" style="gap: 0.5rem;">
-            <input
-              type="number"
-              class="form-control"
-              id="tx-power-input"
-              required
-            />
-            <button class="btn btn-sm btn-primary" type="submit">
-              SET
+            <button class="btn btn-custom" id="selt-test-btn">
+              OFF
             </button>
           </form>
         </div>
         <div
-          class="section-item px-2"
+          class="section-item"
         >
           <p
             class="section-item-desc"
@@ -255,21 +243,13 @@ const getRadioTemplates = (data) => {
             Squelch
           </p>
           
-          <form id="sq-up-limit-form" class="d-flex flex-column w-100" style="gap: 0.5rem;">
-            <input
-              type="number"
-              class="form-control"
-              id="sq-up-limit-input"
-              placeholder="Enter SQ Up Limit"
-            />
-            <button class="btn btn-sm btn-primary" type="submit">
-              SET
-            </button>
-          </form>
+          <button class="btn btn-custom" id="sequelch-btn">
+            ON
+          </button>
         </div>
         <div class="col-span-4"></div>
         <div
-          class="section-item px-2 my-2"
+          class="section-item my-2"
         >
           <p
             class="section-item-desc"
@@ -278,11 +258,11 @@ const getRadioTemplates = (data) => {
           </p>
 
           <button
-            class="btn btn-sm btn-block btn-primary"
+            class="btn btn-custom"
             type="button"
-            id="btn-reset-alarm"
+            id="ptt-btn"
           >
-            RESET
+            OFF
           </button>
         </div>
       </div>
@@ -296,20 +276,20 @@ const getRadioTemplates = (data) => {
       <div class="section-3">
         <div class="row">
           <div class="col">
-            <button class="btn btn-success btn-block mb-4" id="alm_RxUnitPsFail">RX UNIT PS FAIL</button>
-            <button class="btn btn-success btn-block mb-5" id="alm_RxPllUnlock">RX PLL UNLOCK</button>
-            <button class="btn btn-success btn-block mb-4" id="alm_TxUnitPsFail">TX UNIT PS FAIL</button>
-            <button class="btn btn-success btn-block mb-5" id="alm_TxOutputFail">TX OUTPUT FAIL</button>
-            <button class="btn btn-success btn-block mb-4" id="alm_TxPllUnlock">TX PLL UNLOCK</button>
-            <button class="btn btn-success btn-block mb-5" id="alm_PfPowerFail">PF POWER FAIL</button>
+            <button class="btn btn-custom btn-block mb-4" id="alm_RxUnitPsFail">RX UNIT PS FAIL</button>
+            <button class="btn btn-custom btn-block mb-5" id="alm_RxPllUnlock">RX PLL UNLOCK</button>
+            <button class="btn btn-custom btn-block mb-4" id="alm_TxUnitPsFail">TX UNIT PS FAIL</button>
+            <button class="btn btn-custom btn-block mb-5" id="alm_TxOutputFail">TX OUTPUT FAIL</button>
+            <button class="btn btn-custom btn-block mb-4" id="alm_TxPllUnlock">TX PLL UNLOCK</button>
+            <button class="btn btn-custom btn-block mb-5" id="alm_PfPowerFail">PF POWER FAIL</button>
           </div>
           <div class="col">
-            <button class="btn btn-success btn-block mb-4" id="alm_PaUnitPsFail">PA UNIT PS FAIL</button>
-            <button class="btn btn-success btn-block mb-5" id="alm_PaTempFail">PA TEMP FAIL</button>
-            <button class="btn btn-success btn-block mb-4" id="alm_CtrlUnitPsFail">CTRL UNIT PS FAIL</button>
-            <button class="btn btn-success btn-block mb-5" id="alm_PsUnitFail">PS UNIT FAIL</button>
-            <button class="btn btn-success btn-block mb-4" id="alm_FanFail">FAN FAIL</button>
-            <button class="btn btn-success btn-block mb-5" id="alm_PaPowerFail">PR POWER FAIL</button>
+            <button class="btn btn-custom btn-block mb-4" id="alm_PaUnitPsFail">PA UNIT PS FAIL</button>
+            <button class="btn btn-custom btn-block mb-5" id="alm_PaTempFail">PA TEMP FAIL</button>
+            <button class="btn btn-custom btn-block mb-4" id="alm_CtrlUnitPsFail">CTRL UNIT PS FAIL</button>
+            <button class="btn btn-custom btn-block mb-5" id="alm_PsUnitFail">PS UNIT FAIL</button>
+            <button class="btn btn-custom btn-block mb-4" id="alm_FanFail">FAN FAIL</button>
+            <button class="btn btn-custom btn-block mb-5" id="alm_PaPowerFail">PR POWER FAIL</button>
           </div>
         </div>
       </div>
