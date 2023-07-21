@@ -42,7 +42,9 @@ const getRadioTemplates = (data) => {
         <div
           class="section-item py-4"
         >
-          <div class="p-9 rounded ${status == "1" ? "bg-green" : "bg-danger"}">
+          <div class="p-9 rounded ${
+						status == "1" ? "bg-green" : "bg-danger"
+					}" id="radio-status-div">
             <span id="radio-status" class="text-white">
               ${status == "1" ? "ON" : "OFF"}
             </span>
@@ -203,8 +205,10 @@ const getRadioTemplates = (data) => {
             Power
           </p>
 
-          <button class="btn btn-custom" id="power-btn" type="button">
-            ${power_level == "1" ? "ON" : "OFF"}
+          <button class="btn ${
+						status === "1" ? "btn-danger" : "btn-custom"
+					}" id="power-btn">
+            ${status === "1" ? "OFF" : "ON"}
           </button>
         </div>
         <div

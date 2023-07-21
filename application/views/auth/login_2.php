@@ -76,7 +76,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12 col-lg-12 mb-3">
-                                            <div class="card-title text-dark font-weight-bold text-center">JRC Remote System Application</div>
+                                            <div class="card-title text-dark font-weight-bold text-center">Radio Remote System Application</div>
                                         </div>
                                     </div>
                                     <div class="row">

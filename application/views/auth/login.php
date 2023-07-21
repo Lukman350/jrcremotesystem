@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -16,41 +17,42 @@
   <link rel="stylesheet" href="<?= base_url() ?>vendor/stisla/assets/css/style.css">
   <link rel="stylesheet" href="<?= base_url() ?>vendor/stisla/assets/css/components.css">
 </head>
-<?php 
+<?php
 
-  function showtext_time()
-  {
-      date_default_timezone_set('Asia/Jakarta');
-      $date = date('H:i:s');
+function showtext_time()
+{
+  date_default_timezone_set('Asia/Jakarta');
+  $date = date('H:i:s');
 
-      if($date > '05:00:00' && $date < '10:00:00'){
-        return $text_time = 'Good Morning';
-      }elseif($date >= '10:00:00' && $date < '15:00:00'){
-        return $text_time = 'Good Afternoon';
-      }elseif($date < '18:00:00'){
-        return $text_time = 'Good Evening';
-      }else{
-        return $text_time = 'Good Night';
-      }
+  if ($date > '05:00:00' && $date < '10:00:00') {
+    return $text_time = 'Good Morning';
+  } elseif ($date >= '10:00:00' && $date < '15:00:00') {
+    return $text_time = 'Good Afternoon';
+  } elseif ($date < '18:00:00') {
+    return $text_time = 'Good Evening';
+  } else {
+    return $text_time = 'Good Night';
   }
+}
 
- ?>
+?>
+
 <body>
   <div id="app">
     <section class="section">
       <div class="d-flex flex-wrap align-items-stretch">
         <div class="col-lg-4 col-md-6 col-12 order-lg-1 min-vh-100 order-2 bg-white">
           <div class="p-4 m-3">
-          	<div class="row">
-          		<div class="col-sm-2">
-          			<img src="<?= base_url() ?>assets/img/logohubla.png" alt="logo" width="80" class=" rounded-circle mb-5 mt-2">
-          		</div>
-          		<div class="col-sm-10 mt-4">           
-            		<h5 class="text-dark font-weight-bold text-right">Direktorat Jenderal Perhubungan Laut</h5>
-            		<h6 class="text-dark font-weight-normal text-center">Kementerian Perhubungan Republik Indonesia</h6>
-          		</div>
-          	</div>
-            <h4 class="text-dark font-weight-normal text-center"><span class="font-weight-bold">JRC Remote System Application</span></h4>
+            <div class="row">
+              <div class="col-sm-2">
+                <img src="<?= base_url() ?>assets/img/logohubla.png" alt="logo" width="80" class=" rounded-circle mb-5 mt-2">
+              </div>
+              <div class="col-sm-10 mt-4">
+                <h5 class="text-dark font-weight-bold text-right">Direktorat Jenderal Perhubungan Laut</h5>
+                <h6 class="text-dark font-weight-normal text-center">Kementerian Perhubungan Republik Indonesia</h6>
+              </div>
+            </div>
+            <h4 class="text-dark font-weight-normal text-center"><span class="font-weight-bold">Remote System Application</span></h4>
             <!-- <p class="text-muted">Before you get started, you must login or register if you don't already have an account.</p> -->
             <form method="POST" action="#" id="formlogin" class="needs-validation" novalidate="">
               <div class="form-group">
@@ -71,7 +73,7 @@
                 </div>
               </div>
 
-             <!--  <div class="form-group">
+              <!--  <div class="form-group">
                 <div class="custom-control custom-checkbox">
                   <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
                   <label class="custom-control-label" for="remember-me">Remember Me</label>
@@ -93,7 +95,7 @@
             </form>
 
             <div class="text-center mt-5 text-small">
-              Copyright &copy; <?=  date('Y') ?>. Direktorat Jenderal Perhubungan Laut.
+              Copyright &copy; <?= date('Y') ?>. Direktorat Jenderal Perhubungan Laut.
             </div>
           </div>
         </div>
@@ -101,11 +103,11 @@
           <div class="absolute-bottom-left index-2">
             <div class="text-light p-5 pb-2">
               <div class="mb-5 pb-3">
-              	<?php 
+                <?php
 
-                  $text = showtext_time();
+                $text = showtext_time();
 
-              	 ?>
+                ?>
                 <h1 class="mb-2 display-4 font-weight-bold">Hello, <?= $text ?></h1>
                 <h5 class="font-weight-normal text-muted-transparent">Palembang, Indonesia</h5>
                 <h5 class="font-weight-normal text-muted-transparent"><?= date('l, d/M/Y') ?></h5>
@@ -140,46 +142,46 @@
   <script src="<?= base_url() ?>assets/js/auth.js"></script>
 
   <script>
-  var serverClock = $("#time");
+    var serverClock = $("#time");
 
-	if (serverClock.length > 0) {
-	    showServerTime(serverClock, serverClock.text());
-	}
+    if (serverClock.length > 0) {
+      showServerTime(serverClock, serverClock.text());
+    }
 
-	function showServerTime(obj, time) {
-    	var parts   = time.split(":"),
-            newTime = new Date();
-    	newTime.setHours(parseInt(parts[0], 10));
-    	newTime.setMinutes(parseInt(parts[1], 10));
-    	newTime.setSeconds(parseInt(parts[2], 10));
-	    var timeDifference  = new Date().getTime() - newTime.getTime();
-	    var methods = {
-	        displayTime: function () {
-	            var now = new Date(new Date().getTime() - timeDifference);
-	            obj.text([
+    function showServerTime(obj, time) {
+      var parts = time.split(":"),
+        newTime = new Date();
+      newTime.setHours(parseInt(parts[0], 10));
+      newTime.setMinutes(parseInt(parts[1], 10));
+      newTime.setSeconds(parseInt(parts[2], 10));
+      var timeDifference = new Date().getTime() - newTime.getTime();
+      var methods = {
+        displayTime: function() {
+          var now = new Date(new Date().getTime() - timeDifference);
+          obj.text([
 
-	                methods.leadZeros(now.getHours(), 2),
+            methods.leadZeros(now.getHours(), 2),
 
-	                methods.leadZeros(now.getMinutes(), 2),
+            methods.leadZeros(now.getMinutes(), 2),
 
-	                methods.leadZeros(now.getSeconds(), 2)
-	        	].join(":") + ' WIB');
+            methods.leadZeros(now.getSeconds(), 2)
+          ].join(":") + ' WIB');
 
-	            setTimeout(methods.displayTime, 500);
-	        },
+          setTimeout(methods.displayTime, 500);
+        },
 
-	        leadZeros: function (time, width) {
-	        while (String(time).length < width) {
-	            time = "0" + time;
-	        }
-	            return time;
-	        }
-	    }
-	    methods.displayTime();
-	}
-
+        leadZeros: function(time, width) {
+          while (String(time).length < width) {
+            time = "0" + time;
+          }
+          return time;
+        }
+      }
+      methods.displayTime();
+    }
   </script>
 
   <!-- Page Specific JS File -->
 </body>
+
 </html>

@@ -19,7 +19,7 @@ class Main extends CI_Controller
 
 	public function index()
 	{
-		$data['title'] 			= 'JRC Remote System';
+		$data['title'] 			= 'Radio Remote System';
 		$data['JS'] 			= ['RadioTemplate.js', 'main_display.js'];
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
 		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);

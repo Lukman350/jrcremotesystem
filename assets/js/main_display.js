@@ -109,85 +109,85 @@ $(document).ready(function () {
 			const html = radio.radioTemplate(radio.dataRadio);
 			radio.radioElement.html(html);
 
-			$("#channel-form").on("submit", (event) => {
-				event.preventDefault();
+			$("#power-btn").on("click", () => {
+				const data = {
+					key: "status",
+					value: $("#radio-status").html() === "ON" ? 0 : 1,
+				};
+
+				radio.data = data;
+
+				if (data.value == 1) {
+					$("#radio-status").html("ON");
+					$("#radio-status-div").removeClass("bg-danger");
+					$("#radio-status-div").addClass("bg-green");
+					$("#power-btn").html("OFF");
+					$("#power-btn").removeClass("btn-custom");
+					$("#power-btn").addClass("btn-danger");
+				} else {
+					$("#radio-status").html("OFF");
+					$("#radio-status-div").removeClass("bg-green");
+					$("#radio-status-div").addClass("bg-danger");
+					$("#power-btn").html("ON");
+					$("#power-btn").removeClass("btn-danger");
+					$("#power-btn").addClass("btn-custom");
+				}
+			});
+
+			$("#tx-power-btn").on("click", () => {
+				const data = {
+					key: "tx_level",
+					value: $("#tx-power-btn").html() === "RATED" ? 0 : 100,
+				};
+
+				radio.data = data;
+				$("#tx-power-btn").html(data.value == 100 ? "RATED" : "OFF");
+			});
+
+			$("#channel-input").on("change", () => {
+				const value = $("#channel-input").val();
+
+				if (value < 1 || value > 99) {
+					$("#channel-input").addClass("is-invalid");
+
+					return;
+				} else {
+					$("#channel-input").removeClass("is-invalid");
+				}
 
 				const data = {
 					key: "channel",
-					value: $("#channel-input").val(),
-				};
-
-				radio.data = data;
-				$("#channel-number-1").html(data.value);
-				console.log(radio.dataRadio);
-			});
-
-			$("#power-reduction-form").on("submit", (event) => {
-				event.preventDefault();
-
-				const data = {
-					key: "power_level",
-					value: $("#power-reduction-input").val(),
-				};
-
-				radio.data = data;
-				$("#power-level-bar")
-					.css("height", `${data.value}%`)
-					.attr("aria-valuenow", data.value);
-				$("#power-level-value")
-					.html(`${data.value}`)
-					.css("bottom", `calc(75px + ${data.value}px)`);
-			});
-
-			$("#rx-power-form").on("submit", (event) => {
-				event.preventDefault();
-
-				const value = $("#rx-power-input").val();
-
-				if (value < 0 || value > 100) {
-					$("#rx-power-input").addClass("is-invalid");
-
-					return;
-				}
-
-				$("#rx-power-input").removeClass("is-invalid");
-
-				const data = {
-					key: "rx_level",
-					value: $("#rx-power-input").val(),
-				};
-
-				radio.data = data;
-				$("#rx-level-bar").css("height", `${data.value}%`);
-				$("#rx-level-bar").attr("aria-valuenow", data.value);
-				$("#rx-level-value").html(`${data.value}`);
-				$("#rx-level-value").css("bottom", `calc(75px + ${data.value}px)`);
-			});
-
-			$("#tx-power-form").on("submit", (event) => {
-				event.preventDefault();
-
-				const value = $("#tx-power-input").val();
-
-				if (value < 0 || value > 100) {
-					$("#tx-power-input").addClass("is-invalid");
-
-					return;
-				}
-
-				$("#tx-power-input").removeClass("is-invalid");
-
-				const data = {
-					key: "tx_level",
 					value,
 				};
 
 				radio.data = data;
-				$("#tx-level-bar").css("height", `${data.value}%`);
-				$("#tx-level-bar").attr("aria-valuenow", data.value);
-				$("#tx-level-value").html(`${data.value}`);
-				$("#tx-level-value").css("bottom", `calc(75px + ${data.value}px)`);
+				$("#channel-number-1").html(data.value);
 			});
+
+			// $("#tx-power-form").on("submit", (event) => {
+			// 	event.preventDefault();
+
+			// 	const value = $("#tx-power-input").val();
+
+			// 	if (value < 0 || value > 100) {
+			// 		$("#tx-power-input").addClass("is-invalid");
+
+			// 		return;
+			// 	}
+
+			// 	$("#tx-power-input").removeClass("is-invalid");
+
+			// 	const data = {
+			// 		key: "tx_level",
+			// 		value,
+			// 	};
+
+			// 	radio.data = data;
+			// 	$("#tx-level-bar").css("height", `${data.value}%`);
+			// 	$("#tx-level-bar").attr("aria-valuenow", data.value);
+			// 	$("#tx-level-value").html(`${data.value}`);
+			// 	$("#tx-level-value").css("bottom", `calc(75px + ${data.value}px)`);
+			// });
 		});
 	});
 });

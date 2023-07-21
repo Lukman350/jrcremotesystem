@@ -36,26 +36,7 @@
 		top: 0px;
 		left: 40px;
 		z-index: 22;
-	}
-
-	.radio-display .title::before {
-		content: "";
-		background-color: #fff;
-		display: block;
-		width: fit-content;
-		height: 1rem;
-		z-index: 20;
-		position: absolute;
-	}
-
-	.radio-display .title::after {
-		content: "";
-		background-color: #fff;
-		display: block;
-		width: fit-content;
-		height: 1rem;
-		z-index: 20;
-		position: absolute;
+		background-color: #c0c0c0;
 	}
 
 	.radio-display .section-title {
@@ -196,7 +177,7 @@
 	}
 
 	.bg-green {
-		background-color: #B5C668;
+		background-color: #7E8A44;
 		color: #00ff00;
 	}
 
@@ -223,6 +204,19 @@
 		justify-content: center;
 		align-items: center;
 	}
+
+	.modal-content {
+		background-color: #c0c0c0;
+	}
+
+	.modal-title {
+		color: black;
+	}
+
+	#channel-input {
+		background-color: #7E8A44;
+		color: #00ff00;
+	}
 </style>
 
 <div class="content">
@@ -234,7 +228,7 @@
 
 				</div>
 				<div class="ml-md-auto py-2 py-md-0">
-					<h5 class="text-white op-2 mt-2 text-right">JRC Monitor Web Application</h5>
+					<h5 class="text-white op-2 mt-2 text-right">Radio Monitor Web Application</h5>
 				</div>
 			</div>
 		</div>
