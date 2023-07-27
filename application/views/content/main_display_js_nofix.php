@@ -249,10 +249,8 @@
 							$countVHF = 0;
 							$countHF = 0;
 
-							foreach ($response as $data) :
+							foreach ($radio_data as $data_radio) :
 								$type = "";
-
-								$data_radio = $data['data'];
 
 								if ($data_radio['type'] == "VHF") {
 									$countVHF = $countVHF += 1;
@@ -263,55 +261,13 @@
 								} else {
 									$type = "NAVTEK 1";
 								}
-
-								if ($data['status'] == false) :
 							?>
-								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 btn btn-danger" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>">
-										<span class="d-block"><?= $data_radio['ip_address'] ?></span>
-										<span class="d-block">Radio <?= $type ?></span>
-										<span class="d-block">
-											Status: OFF
-										</span>
-								</button>
-							<?php
-								else :
-							?>
-								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 btn btn-success" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>">
-										<span class="d-block"><?= $data_radio['ip_address'] ?></span>
-										<span class="d-block">Radio <?= $type ?></span>
-										<span class="d-block">
-											Channel No. <?= $data_radio['sts_ch'] ?>
-										</span>
-								</button>
-							<?php endif;
-							endforeach; ?>
-
-							<?php
-							// $countVHF = 0;
-							// $countHF = 0;
-							
-							// foreach ($radio_data as $radio) :
-							// 	$type = "";
-							// 	if ($radio['type'] == "VHF") {
-							// 		$countVHF = $countVHF += 1;
-							// 		$type = "VHF " . $countVHF;
-							// 	} else if ($radio['type'] == "HF") {
-							// 		$countHF = $countHF += 1;
-							// 		$type = "HF " . $countHF;
-							// 	} else {
-							// 		$type = "NAVTEK 1";
-							// 	}
-							?>
-
-								<!-- <div>
-									<button type="button" id="btn-vhf" data-id="< //$radio['id'] " data-radio-no=" $type " class="w-100 //($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') " data-toggle="modal" data-target="#radio_modal">
-										Radio //$type; 
-										//<span class="d-block">
-											// ($radio['status'] ? 'Channel ' . $radio['channel'] : 'OFF') 
-										</span>
-									</button>
-								</div> -->
-							<?php //endforeach; ?>
+							<div id="content-wrapper" data-ip="<?= $data_radio['ip_address'] ?>" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>">
+								<div class="loader-wrapper">
+									<div class="loader"></div>
+								</div>
+							</div>
+							<?php endforeach; ?>
 						</div>
 					</div>
 				</div>

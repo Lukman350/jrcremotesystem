@@ -40,7 +40,7 @@
             /* width: 300px;
             height: 200px; */
             border: 1px solid black;
-            background-image: url(<?= base_url() ?>assets/img/unsplash/login-bg-4.jpg);
+            background-image: url("<?= base_url() ?>assets/img/unsplash/login-bg-4.jpg");
             background-position: top bottom;
             animation: mymove 50s infinite;
         }

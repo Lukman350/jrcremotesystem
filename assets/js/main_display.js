@@ -4,20 +4,10 @@ class RadioDisplay {
 
 	constructor(
 		element,
-		radioNo,
-		{ id, channel, ip_address, status, rx_level, tx_level, power_level }
+		data,
 	) {
 		this.radioElement = element;
-		this.dataRadio = {
-			id,
-			radioNo,
-			channel,
-			ip_address,
-			status,
-			rx_level,
-			tx_level,
-			power_level,
-		};
+		this.dataRadio = data;
 	}
 
 	set data({ key, value }) {
@@ -43,33 +33,40 @@ const formSubmit = (form, url, data, callback) => {
 				if (result.status) {
 					callback(result);
 				} else {
-					notifError();
+					notifError("There are any trouble in processing data.");
 				}
 			},
 			error: function () {
-				notifError();
+				notifError("There are any trouble in processing data.");
 			},
 		});
 	});
 };
 
-const getRadioData = async (id, callback) => {
+const getRadioData = async (id, type, ip, callback) => {
+	const data = new FormData();
+	data.append('id', id);
+	data.append('ip_address', ip);
+	data.append('type', type);
+
 	await $.ajax({
 		url: "main/get_radio",
-		data: {
-			id: id,
-		},
+		data: data,
 		type: "POST",
+		processData: false,
+  		contentType: false,
 		dataType: "JSON",
 		success: function (result) {
+			console.log(result);
 			if (result.status) {
 				callback(result);
 			} else {
-				notifError();
+				callback(result);
+				notifError("There are any trouble in get data radio, success function");
 			}
 		},
 		error: function () {
-			notifError();
+			notifError("There are any trouble in get data radio, error function");
 		},
 	});
 };
@@ -92,20 +89,21 @@ $(document).ready(function () {
 
 	loader(radioDisplay);
 
-	getRadioData(1, function (result) {
-		const radio = new RadioDisplay(radioDisplay, "VHF 1", result.data);
+	getRadioData(1, "VHF", '192.168.101.101', function (result) {
+		const radio = new RadioDisplay(radioDisplay, result.data);
 		const html = radio.radioTemplate(radio.dataRadio);
 		radio.radioElement.html(html);
 	});
 
 	$(document).on("click", "#btn-vhf", async function () {
 		const id = $(this).data("id");
+		const ip = $(this).data("ip");
 		const radioNo = $(this).data("radio-no");
 
 		loader(radioDisplay);
 
-		await getRadioData(id, function (result) {
-			const radio = new RadioDisplay(radioDisplay, radioNo, result.data);
+		await getRadioData(id, radioNo, ip, function (result) {
+			const radio = new RadioDisplay(radioDisplay, result.data);
 			const html = radio.radioTemplate(radio.dataRadio);
 			radio.radioElement.html(html);
 
@@ -298,13 +296,13 @@ function notifSuccess(text) {
 	);
 }
 
-function notifError() {
+function notifError(message) {
 	$.notify(
 		{
 			// options
 			icon: "flaticon-error",
 			title: "Error!",
-			message: "There are any trouble in processing data",
+			message: message,
 		},
 		{
 			// settings

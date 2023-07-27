@@ -1,20 +1,59 @@
 const getRadioTemplates = (data) => {
 	const {
-		id,
-		radioNo,
-		channel,
-		ip_address,
-		status,
-		rx_level,
-		tx_level,
-		power_level,
-	} = data;
+    id,
+    type,
+    ip_address,
+    status,
+    rmt_sw,
+    unit_no,
+    sts_ch,
+    sts_txfreq,
+    sts_rxfreq,
+    sts_po,
+    sts_pow,
+    alm_RxUnitPsFail,
+    alm_TxUnitPsFail,
+    alm_PaUnitPsFail,
+    alm_CtrlUnitPsFail,
+    alm_PsUnitFail,
+    alm_TxOutputFail,
+    alm_RxPllUnlock,
+    alm_TxPllUnlock,
+    alm_PaTempFail,
+    alm_FanFail,
+    alm_PfPowerFail,
+    alm_PaPowerFial,
+    sts_rx_pkt,
+    sts_rx_delay_pkt,
+    sts_rx_loss_pkt,
+    sts_fifo_over,
+    sts_fifo_under,
+    sts_jitter,
+    sts_max_jitter,
+    sts_skew,
+    sts_max_skew,
+    sts_jit_usage,
+    sts_frqerr,
+    sts_rate_control,
+    sts_rate_count,
+    sts_main,
+    sts_mcdsp,
+    sts_vdsp,
+    sts_fpga,
+    sts_cpu,
+    sts_mac,
+    sts_tone,
+  } = data;
+
+  const rx_level = parseInt(sts_rxfreq);
+  const tx_level = parseInt(sts_txfreq);
+  const power_level = parseInt(sts_po);
 
 	return `
   
   <div class="radio-display">
     <h2 class="title">
-      Radio ${radioNo}
+      Radio ${type}
     </h2>
     
     <div class="section-container">
@@ -30,7 +69,7 @@ const getRadioTemplates = (data) => {
             class="section-item-title"
             id="channel-number-1"
           >
-            ${channel}
+            ${status ? sts_ch : "0"}
           </h1>
 
           <p
@@ -43,10 +82,10 @@ const getRadioTemplates = (data) => {
           class="section-item py-4"
         >
           <div class="p-9 rounded ${
-						status == "1" ? "bg-green" : "bg-danger"
+						status ? "bg-green" : "bg-danger"
 					}" id="radio-status-div">
             <span id="radio-status" class="text-white">
-              ${status == "1" ? "ON" : "OFF"}
+              ${status ? "ON" : "OFF"}
             </span>
           </div>
           <p
@@ -72,14 +111,14 @@ const getRadioTemplates = (data) => {
             <div
               class="progress-bar bg-danger"
               role="progressbar"
-              style="height: ${rx_level}%"
-              aria-valuenow="${rx_level}"
+              style="height: ${status ? rx_level : 0}%"
+              aria-valuenow="${status ? rx_level : 0}"
               aria-valuemin="0"
-              aria-valuemax="100"
+              aria-valuemax="200"
               id="rx-level-bar"
             >
-              <span class="text-dark" id="rx-level-value" style="bottom: calc(75px + ${rx_level}px)">
-                ${rx_level}
+              <span class="text-dark" id="rx-level-value" style="bottom: calc(75px + ${status ? rx_level : 0}px)">
+                ${status ? rx_level : 0}
               </span>
             </div>
           </div>
@@ -106,13 +145,13 @@ const getRadioTemplates = (data) => {
             <div
               class="progress-bar bg-danger"
               role="progressbar"
-              style="height: ${power_level}%"
-              aria-valuenow="${power_level}"
+              style="height: ${status ? power_level : 0}%"
+              aria-valuenow="${status ? power_level : 0}"
               aria-valuemin="0"
               aria-valuemax="100"
               id="power-level-bar"
             >
-              <span class="text-dark" id="power-level-value" style="bottom: calc(75px + ${power_level}px)">${power_level}</span>
+              <span class="text-dark" id="power-level-value" style="bottom: calc(75px + ${status ? power_level : 0}px)">${status ? power_level : 0}</span>
             </div>
           </div>
           <p
@@ -191,7 +230,7 @@ const getRadioTemplates = (data) => {
             type="number"
             class="form-control"
             id="channel-input"
-            value="${channel}"
+            value="${status ? sts_ch : 0}"
             placeholder="Enter Channel Number"
             required
           />
@@ -206,9 +245,9 @@ const getRadioTemplates = (data) => {
           </p>
 
           <button class="btn ${
-						status === "1" ? "btn-danger" : "btn-custom"
+						status ? "btn-danger" : "btn-custom"
 					}" id="power-btn">
-            ${status === "1" ? "OFF" : "ON"}
+            ${status ? "OFF" : "ON"}
           </button>
         </div>
         <div
@@ -221,7 +260,7 @@ const getRadioTemplates = (data) => {
           </p>
 
           <button class="btn btn-custom" id="tx-power-btn">
-            ${tx_level > "0" ? "RATED" : "OFF"}
+            ${tx_level > 0 ? "RATED" : "OFF"}
           </button>
         </div>
         <div
