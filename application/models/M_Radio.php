@@ -13,16 +13,21 @@ class M_Radio extends CI_model
     return $query->result_array();
   }
 
-  public function getRadio($id, $type, $ip)
+  public function getRadio($data = [])
   {
     $auth = [];
 
-		if (str_contains($type, "VHF")) {
+    $id = $data['id'];
+    $type = $data['type'];
+    $name = $data['name'];
+    $ip = $data['ip_address'];
+
+		if (str_contains($type, "VHF") || $type == "VHF") {
 			$auth = ['root', '/admin/'];
-		} else if (str_contains($type, "HF")) {
+		} else if (str_contains($type, "HF") || $type == "HF") {
 			$auth = ['jrc', 'aaaa', 'digest'];
-		} else if (str_contains($type, "NAVTEX")) {
-			$auth = ['jrc', 'aaaa'];
+		} else if (str_contains($type, "NAVTEX") || $type == "NAVTEX") {
+			$auth = ['jrc', 'aaaa', 'digest'];
 		}
 
 		$client = new Client([
@@ -42,11 +47,58 @@ class M_Radio extends CI_model
 					array_push($arrbar, $exp);
 				}
 		
-				$data = array(
+				$data = (str_contains($type, "HF") && $type == "HF") || (str_contains($type, "NAVTEX") && $type == "NAVTEX")
+				? array(
 					"id" => $id,
 					"ip_address" => $ip,
 					"type" =>  $type,
           "status" => true,
+          "name" => $name,
+					"rmt_sw" => str_replace("'", "", $arrbar[0][1]),
+					"unit_no" => str_replace("'", "", $arrbar[1][1]),
+					"sts_ch" => str_replace("'", "", $arrbar[2][1]),
+					"sts_freq" => str_replace("'", "", $arrbar[3][1]),
+					"sts_em" => str_replace("'", "", $arrbar[4][1]),
+					"sts_swr" => str_replace("'", "", $arrbar[5][1]),
+					"sts_po" => str_replace("'", "", $arrbar[6][1]),
+					"sts_pf" => str_replace("'", "", $arrbar[7][1]),
+					"sts_pr" => str_replace("'", "", $arrbar[8][1]),
+					"sts_pow" => str_replace("'", "", $arrbar[9][1]),
+					"sts_test" => str_replace("'", "", $arrbar[10][1]),
+					"sts_pa" => str_replace("'", "", $arrbar[11][1]),
+					"sts_tune" => str_replace("'", "", $arrbar[12][1]),
+					"sts_cal" => str_replace("'", "", $arrbar[13][1]),
+					"alm_AmuUnmatch" => str_replace("'", "", $arrbar[14][1]),
+					"alm_LevelMax" => str_replace("'", "", $arrbar[15][1]),
+					"alm_LevelMin" => str_replace("'", "", $arrbar[16][1]),
+					"alm_PowerDown" => str_replace("'", "", $arrbar[17][1]),
+					"alm_MuDetune" => str_replace("'", "", $arrbar[18][1]),
+					"alm_PaCombine1" => str_replace("'", "", $arrbar[19][1]),
+					"alm_SoftInterlock" => str_replace("'", "", $arrbar[20][1]),
+					"alm_PaFail1" => str_replace("'", "", $arrbar[21][1]),
+					"alm_MuManual" => str_replace("'", "", $arrbar[22][1]),
+					"alm_KeyInterlock" => str_replace("'", "", $arrbar[23][1]),
+					"alm_AmuBusy" => str_replace("'", "", $arrbar[24][1]),
+					"alm_KeyTrip" => str_replace("'", "", $arrbar[25][1]),
+					"alm_ExciterAlarm" => str_replace("'", "", $arrbar[26][1]),
+					"alm_AmuFail" => str_replace("'", "", $arrbar[27][1]),
+					"alm_PsOverVoltage" => str_replace("'", "", $arrbar[28][1]),
+					"alm_PsOverCurrent" => str_replace("'", "", $arrbar[29][1]),
+					"alm_FuseBlown" => str_replace("'", "", $arrbar[30][1]),
+					"alm_PaCombine2" => str_replace("'", "", $arrbar[31][1]),
+					"alm_DrvAmpFail" => str_replace("'", "", $arrbar[32][1]),
+					"alm_PaFail2" => str_replace("'", "", $arrbar[33][1]),
+					"alm_TuneFail" => str_replace("'", "", $arrbar[34][1]),
+					"alm_AntVswr" => str_replace("'", "", $arrbar[35][1]),
+					"alm_Local" => str_replace("'", "", $arrbar[36][1]),
+					"alm_LineError" => str_replace("'", "", $arrbar[37][1]),
+					"sts_tone" => str_replace("'", "", $arrbar[38][1]),
+				) : array(
+					"id" => $id,
+					"ip_address" => $ip,
+					"type" =>  $type,
+          "status" => true,
+          "name" => $name,
 					"rmt_sw" => str_replace("'", "", $arrbar[0][1]),
 					"unit_no" => str_replace("'", "", $arrbar[1][1]),
 					"sts_ch" => str_replace("'", "", $arrbar[2][1]),
@@ -103,6 +155,7 @@ class M_Radio extends CI_model
 							"ip_address" => $ip,
 							"type" =>  $type,
               "status" => false,
+              "name" => $name,
 						]
 					];
 				}
@@ -118,6 +171,7 @@ class M_Radio extends CI_model
 					"ip_address" => $ip,
 					"type" =>  $type,
           "status" => false,
+          "name" => $name,
 				]
 			];
 
@@ -133,6 +187,7 @@ class M_Radio extends CI_model
 					"ip_address" => $ip,
 					"type" =>  $type,
           "status" => false,
+          "name" => $name,
 				]
 			];
 

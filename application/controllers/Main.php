@@ -1,16 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
-
 class Main extends CI_Controller
 {
-	private $_client = [];
-
-	public $radioData = [];
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -23,14 +15,14 @@ class Main extends CI_Controller
 		$data['JS'] 			= ['RadioTemplate.js', 'main_display.js'];
 		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
 		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);
-		$data['radio_data'] = $this->radio->getRadioByColumn('id, status, channel, ip_address, type');
+		$data['radio_data'] = $this->radio->getRadioByColumn('id, name, status, channel, ip_address, type');
 		// $api_url = 'https://jsonplaceholder.typicode.com';
 
 		$radio_length = count($data['radio_data']);
 
 		$response = [];
 		for ($i = 0; $i < $radio_length; $i++) {
-			$response[$i] = $this->_getRadioFromAPI($i, $data['radio_data'][$i]);
+			$response[$i] = $this->_getRadioFromAPI($data['radio_data'][$i]);
 		}
 
 		$data['response'] = $response;
@@ -41,140 +33,18 @@ class Main extends CI_Controller
 		$this->load->view('templates/layout', $page);
 	}
 
-	private function _getRadioFromAPI($radio_id, $radio)
+	private function _getRadioFromAPI($radio)
 	{
-		$auth = [];
-
-		// $headers = [
-		// 	'Authorization: Digest username="jrc", realm="HTTPd for NORTi /", nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093", uri="/status_get.cgi", response="bfe372b7ed7909b4fe650a3910657f00", opaque="HTTPd Server", qop=auth, nc=0000027a, cnonce="58551fc92341c768'
-		// ];
-
-		if ($radio['type'] == "VHF") {
-			$auth = ['root', '/admin/'];
-		} else if ($radio['type'] == "HF") {
-			$auth = ['jrc', 'aaaa', 'digest'];
-		} else if ($radio['type'] == "NAVTEX") {
-			$auth = ['jrc', 'aaaa'];
-		}
-
-		$this->_client[$radio_id] = new Client([
-			'base_uri'  => 'http://' . $radio['ip_address'],
-			'auth'  	=> $auth,
-		]);
-
-		try {
-			$this->radioData[$radio_id] = $this->_client[$radio_id]->request('GET', '/status_get.cgi', ['connect_timeout' => 3.14]);
-			// $this->radioData[$radio_id] = $this->_sendCurl('http://' . $radio['ip_address'] . '/status_get.cgi', "GET", [
-			// 	"Authorization: Basic cm9vdDovYWRtaW4v",
-			// 	"Content-Type: application/json"
-			// ]);
-	
-			$arrbar = array();
-			// $code = $this->radioData[$radio_id]['code'];
-			$code = $this->radioData[$radio_id]->getStatusCode();
-			$body = explode(",", $this->radioData[$radio_id]->getBody()->getContents());
-			// $body = explode(",", $this->radioData[$radio_id]['data']);
-
-			if ($body != null) {
-				foreach ($body as $value) {
-					$exp = explode(":", $value);
-					array_push($arrbar, $exp);
-				}
+		$data = [
+			'id' => $radio['id'],
+			'type' => $radio['type'],
+			'name' => $radio['name'],
+			'ip_address' => $radio['ip_address']
+		];
 		
-				$data = array(
-					"id" => $radio['id'],
-					"ip_address" => $radio['ip_address'],
-					"type" =>  $radio['type'],
-					"rmt_sw" => str_replace("'", "", $arrbar[0][1]),
-					"unit_no" => str_replace("'", "", $arrbar[1][1]),
-					"sts_ch" => str_replace("'", "", $arrbar[2][1]),
-					"sts_txfreq" => str_replace("'", "", $arrbar[3][1]),
-					"sts_rxfreq" => str_replace("'", "", $arrbar[4][1]),
-					"sts_po" => str_replace("'", "", $arrbar[5][1]),
-					"sts_pow" => str_replace("'", "", $arrbar[6][1]),
-					"alm_RxUnitPsFail" => str_replace("'", "", $arrbar[7][1]),
-					"alm_TxUnitPsFail" => str_replace("'", "", $arrbar[8][1]),
-					"alm_PaUnitPsFail" => str_replace("'", "", $arrbar[9][1]),
-					"alm_CtrlUnitPsFail" => str_replace("'", "", $arrbar[10][1]),
-					"alm_PsUnitFail" => str_replace("'", "", $arrbar[11][1]),
-					"alm_TxOutputFail" => str_replace("'", "", $arrbar[12][1]),
-					"alm_RxPllUnlock" => str_replace("'", "", $arrbar[13][1]),
-					"alm_TxPllUnlock" => str_replace("'", "", $arrbar[14][1]),
-					"alm_PaTempFail" => str_replace("'", "", $arrbar[15][1]),
-					"alm_FanFail" => str_replace("'", "", $arrbar[16][1]),
-					"alm_PfPowerFail" => str_replace("'", "", $arrbar[17][1]),
-					"alm_PaPowerFial" => str_replace("'", "", $arrbar[18][1]),
-					"sts_rx_pkt" => str_replace("'", "", $arrbar[19][1]),
-					"sts_rx_delay_pkt" => str_replace("'", "", $arrbar[20][1]),
-					"sts_rx_loss_pkt" => str_replace("'", "", $arrbar[21][1]),
-					"sts_fifo_over" => str_replace("'", "", $arrbar[22][1]),
-					"sts_fifo_under" => str_replace("'", "", $arrbar[23][1]),
-					"sts_jitter" => str_replace("'", "", $arrbar[24][1]),
-					"sts_max_jitter" => str_replace("'", "", $arrbar[25][1]),
-					"sts_skew" => str_replace("'", "", $arrbar[26][1]),
-					"sts_max_skew" => str_replace("'", "", $arrbar[27][1]),
-					"sts_jit_usage" => str_replace("'", "", $arrbar[28][1]),
-					"sts_frqerr" => str_replace("'", "", $arrbar[29][1]),
-					"sts_rate_control" => str_replace("'", "", $arrbar[30][1]),
-					"sts_rate_count" => str_replace("'", "", $arrbar[31][1]),
-					"sts_main" => str_replace("'", "", $arrbar[32][1]),
-					"sts_mcdsp" => str_replace("'", "", $arrbar[33][1]),
-					"sts_vdsp" => str_replace("'", "", $arrbar[34][1]),
-					"sts_fpga" => str_replace("'", "", $arrbar[35][1]),
-					"sts_cpu" => str_replace("'", "", $arrbar[36][1]),
-					"sts_mac" => $arrbar[37][1] . ':' . $arrbar[37][2] . ':' . $arrbar[37][3] . ':' . $arrbar[37][4] . ':' . $arrbar[37][5] . ':' . $arrbar[37][6],
-					"sts_tone" => str_replace("'", "", $arrbar[38][1]),
-				);
+		$response = $this->radio->getRadio($data);
 
-				if ($code == 200) {
-					$notif_data = [
-						'status'  => TRUE,
-						'message' => 'Radio data found',
-						'data'    => $data,
-					];
-				} else {
-					$notif_data = [
-						'status'  => FALSE,
-						'message' => 'Radio data not found',
-						'data' => [
-							"id" => $radio['id'],
-							"ip_address" => $radio['ip_address'],
-							"type" =>  $radio['type'],
-						]
-					];
-				}
-			}
-			
-			return $notif_data;
-		} catch (ConnectException $error) {
-			$notif_data = [
-				'status'  => FALSE,
-				'message' => $error->getMessage(),
-				'data' => [
-					"id" => $radio['id'],
-					"ip_address" => $radio['ip_address'],
-					"type" =>  $radio['type'],
-				]
-			];
-
-			log_message('error', $error->getMessage());
-			
-			return $notif_data;
-		} catch (RequestException $error) {
-			$notif_data = [
-				'status'  => FALSE,
-				'message' => $error->getMessage(),
-				'data' => [
-					"id" => $radio['id'],
-					"ip_address" => $radio['ip_address'],
-					"type" =>  $radio['type'],
-				]
-			];
-
-			log_message('error', $error->getMessage());
-
-			return $notif_data;
-		}
+		return $response;
 	}
 
 	public function get_radio()
@@ -183,7 +53,15 @@ class Main extends CI_Controller
 		
 		$radio_id = $_POST['id'];
 		$ip_address = $_POST['ip_address'];
+		$name = $_POST['name'];
 		$type = $_POST['type'];
+
+		$data = [
+			'id' => $radio_id,
+			'ip_address' => $ip_address,
+			'type' => $type,
+			'name' => $name
+		];
 
 		if (!isset($radio_id)) {
 			$notif_data = [
@@ -195,7 +73,7 @@ class Main extends CI_Controller
 			die;
 		}
 
-		$radio_data = $this->radio->getRadio($radio_id, $type, $ip_address);
+		$radio_data = $this->radio->getRadio($data);
 
 		if ($radio_data) {
 			$notif_data = $radio_data;
