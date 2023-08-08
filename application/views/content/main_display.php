@@ -21,7 +21,6 @@
 	.radio-display {
 		display: grid;
 		padding: 1rem;
-		border: 1px solid #4b4b4b;
 		overflow: auto;
 		background-color: #c0c0c0;
 		color: black;
@@ -80,6 +79,10 @@
 
 	.radio-display .col-span-4 {
 		grid-column: span 4;
+	}
+
+	.radio-display .col-span-3 {
+		grid-column: span 3;
 	}
 
 	.radio-display .section-item {
@@ -151,7 +154,7 @@
 		flex-direction: column;
 		gap: 1rem;
 		position: absolute;
-		top: 52px;
+		top: 37px;
 	}
 
 	.radio-display #rx-level-value,
@@ -178,12 +181,12 @@
 
 	.bg-green {
 		background-color: #7E8A44;
-		color: #00ff00;
+		color: #fff;
 	}
 
 	.btn-custom {
 		background-color: #7E8A44;
-		color: #00ff00;
+		color: #fff;
 		text-transform: uppercase;
 	}
 
@@ -213,9 +216,9 @@
 		color: black;
 	}
 
-	#channel-input {
+	.radio-display input, .radio-display select {
 		background-color: #7E8A44;
-		color: #00ff00;
+		color: #fff;
 	}
 </style>
 
@@ -261,27 +264,45 @@
 									$countHF = $countHF += 1;
 									$type = "HF " . $countHF;
 								} else {
-									$type = "NAVTEK 1";
+									$type = "NAVTEX 1";
 								}
+
+								$radio_name = $data_radio['name'] . " " . $type;
 
 								if ($data['status'] == false) :
 							?>
-								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 btn btn-danger" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>">
+								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>" class="w-100 btn btn-danger d-flex justify-content-center align-items-center" style="gap: 0.8rem;" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>" data-name="<?= $radio_name; ?>">
+									<span>
+										<i class="fas fa-broadcast-tower" style="font-size: 24px;"></i>
+									</span>
+									
+									<div>
 										<span class="d-block"><?= $data_radio['ip_address'] ?></span>
-										<span class="d-block">Radio <?= $type ?></span>
+										<span class="d-block">Radio <?= $radio_name ?></span>
 										<span class="d-block">
 											Status: OFF
 										</span>
+									</div>
 								</button>
 							<?php
 								else :
 							?>
-								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-radio-no="<?= $type ?>" class="w-100 btn btn-success" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>">
+								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>" class="w-100 btn btn-success d-flex justify-content-center align-items-center" style="gap: 0.8rem;"  data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>" data-name="<?= $radio_name; ?>">
+									<span>
+										<i class="fas fa-broadcast-tower" style="font-size: 24px;"></i>
+									</span>
+
+									<div>
 										<span class="d-block"><?= $data_radio['ip_address'] ?></span>
-										<span class="d-block">Radio <?= $type ?></span>
+										<span class="d-block">Radio <?= $radio_name; ?></span>
 										<span class="d-block">
-											Channel No. <?= $data_radio['sts_ch'] ?>
+											CH <?= $data_radio['sts_ch'] ?>
+
+											<?php if ($data_radio['type'] == "HF" || $data_radio['type'] == "NAVTEX") {
+												echo "Freq: " . $data_radio['sts_freq'];
+											} ?>
 										</span>
+									</div>
 								</button>
 							<?php endif;
 							endforeach; ?>

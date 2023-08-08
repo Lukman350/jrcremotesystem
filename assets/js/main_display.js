@@ -43,33 +43,40 @@ const formSubmit = (form, url, data, callback) => {
 	});
 };
 
-const getRadioData = async (id, type, ip, callback) => {
-	const data = new FormData();
-	data.append('id', id);
-	data.append('ip_address', ip);
-	data.append('type', type);
 
+const getRadioData = async (id, type, ip, name, callback) => {
 	await $.ajax({
 		url: "main/get_radio",
-		data: data,
+		data: {
+			id: id,
+			type: type,
+			ip_address: ip,
+			name: name
+		},
 		type: "POST",
-		processData: false,
-  		contentType: false,
 		dataType: "JSON",
 		success: function (result) {
-			console.log(result);
 			if (result.status) {
 				callback(result);
 			} else {
 				callback(result);
-				notifError("There are any trouble in get data radio, success function");
 			}
 		},
-		error: function () {
-			notifError("There are any trouble in get data radio, error function");
+		error: function (error) {
+			notifError(error);
 		},
 	});
 };
+
+// const sendReloadData = (type, ip) => {
+// 	const radio_length = 11;
+
+// 	for (let i = 1; i <= radio_length; i ++) {
+// 		getRadioData(i, type, ip, (result) => {
+// 			// const id = $("button[data-id]")
+// 		})
+// 	}
+// }
 
 const loader = (element) => {
 	element.html(`
@@ -89,20 +96,15 @@ $(document).ready(function () {
 
 	loader(radioDisplay);
 
-	getRadioData(1, "VHF", '192.168.101.101', function (result) {
-		const radio = new RadioDisplay(radioDisplay, result.data);
-		const html = radio.radioTemplate(radio.dataRadio);
-		radio.radioElement.html(html);
-	});
-
 	$(document).on("click", "#btn-vhf", async function () {
 		const id = $(this).data("id");
 		const ip = $(this).data("ip");
-		const radioNo = $(this).data("radio-no");
+		const type = $(this).data("type");
+		const name = $(this).data("name");
 
 		loader(radioDisplay);
 
-		await getRadioData(id, radioNo, ip, function (result) {
+		await getRadioData(id, type, ip, name, function (result) {
 			const radio = new RadioDisplay(radioDisplay, result.data);
 			const html = radio.radioTemplate(radio.dataRadio);
 			radio.radioElement.html(html);
@@ -161,6 +163,8 @@ $(document).ready(function () {
 				radio.data = data;
 				$("#channel-number-1").html(data.value);
 			});
+
+			$("form").submit((event) => event.preventDefault());
 
 			// $("#tx-power-form").on("submit", (event) => {
 			// 	event.preventDefault();
@@ -296,13 +300,13 @@ function notifSuccess(text) {
 	);
 }
 
-function notifError(message) {
+function notifError(message = null) {
 	$.notify(
 		{
 			// options
 			icon: "flaticon-error",
 			title: "Error!",
-			message: message,
+			message: message == null ? "There are any trouble in procesing data" : message,
 		},
 		{
 			// settings
