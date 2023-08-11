@@ -28,7 +28,17 @@
 	<link rel="stylesheet" href="<?= base_url() ?>vendor/atlantis-lite/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?= base_url() ?>vendor/atlantis-lite/assets/css/atlantis.min.css">
 	<link rel="stylesheet" href="<?= base_url() ?>assets/css/custom_css.css">
-
+	<?php
+	if (isset($CSS)) {
+		if (is_array($CSS)) {
+			foreach ($CSS as $css) {
+				echo '<link rel="stylesheet" href="' . base_url() . 'assets/css/' . $css . '" />';
+			}
+		} else {
+			echo '<link rel="stylesheet" href="' . base_url() . 'assets/css/' . $css . '" />';
+		}
+	}
+	?>
 </head>
 
 <body>

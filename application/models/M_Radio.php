@@ -4,13 +4,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 
 class M_Radio extends CI_model
 {
   public function getAllRadio()
   {
-    $query = $this->db->query("SELECT * FROM radio");
-    return $query->result_array();
+    return $this->db->get('radio')->result_array();
   }
 
   public function getRadio($data = [])
@@ -23,37 +25,38 @@ class M_Radio extends CI_model
     $name = $data['name'];
     $ip = $data['ip_address'];
 
-		if (str_contains($type, "VHF") || $type == "VHF") {
-			$auth = ['root', '/admin/'];
+    if (strpos($type, "VHF") || $type == "VHF") {
+      $auth = ['root', '/admin/'];
       $endpoint = '/index_get.cgi';
-		} else if (str_contains($type, "HF") || $type == "HF") {
-			$auth = ['jrc', 'aaaa', 'digest'];
+    } else if (strpos($type, "HF") || $type == "HF") {
+      $auth = ['jrc', 'aaaa', 'digest'];
       $endpoint = '/status_get.cgi';
-		} else if (str_contains($type, "NAVTEX") || $type == "NAVTEX") {
-			$auth = ['jrc', 'aaaa', 'digest'];
+    } else if (strpos($type, "NAVTEX") || $type == "NAVTEX") {
+      $auth = ['jrc', 'aaaa', 'digest'];
       $endpoint = '/status_get.cgi';
-		}
+    }
 
-		$client = new Client([
-			'base_uri'  => 'http://' . $ip,
-			'auth'  	=> $auth,
-		]);
+    $client = new Client([
+      'base_uri'  => 'http://' . $ip,
+      'auth'    => $auth,
+    ]);
 
-		try {
-			$request = $client->request('GET', $endpoint, ['connect_timeout' => 3.14]);
-			$arrbar = array();
-			$code = $request->getStatusCode();
-			$body = explode(",", $request->getBody()->getContents());
+    try {
+      $request = $client->request('GET', $endpoint, ['connect_timeout' => 3.14]);
 
-			if ($body != null) {
-				foreach ($body as $value) {
-					$exp = explode(":", $value);
-					array_push($arrbar, $exp);
-				}
-		
-				$data = [];
-        
-        if (str_contains($type, "HF") && $type == "HF") {
+      $arrbar = array();
+      $code = $request->getStatusCode();
+      $body = explode(",", $request->getBody()->getContents());
+
+      if ($body != null) {
+        foreach ($body as $value) {
+          $exp = explode(":", $value);
+          array_push($arrbar, $exp);
+        }
+
+        $data = [];
+
+        if (strpos($type, "HF") && $type == "HF") {
           $data = [
             "id" => $id,
             "ip_address" => $ip,
@@ -100,7 +103,7 @@ class M_Radio extends CI_model
             "alm_LineError" => str_replace("'", "", $arrbar[37][1]),
             "sts_tone" => str_replace("'", "", $arrbar[38][1]),
           ];
-        } else if (str_contains($type, "NAVTEX") || $type == "NAVTEX") {
+        } else if (strpos($type, "NAVTEX") || $type == "NAVTEX") {
           $data = [
             "id" => $id,
             "ip_address" => $ip,
@@ -147,7 +150,7 @@ class M_Radio extends CI_model
             "alm_LineError" => str_replace("'", "", $arrbar[37][1]),
             "sts_tone" => str_replace("'", "", $arrbar[38][1]),
           ];
-        } else if (str_contains($type, "VHF") || $type == "VHF") {
+        } else if (strpos($type, "VHF") || $type == "VHF") {
           $data = [
             "id" => $id,
             "ip_address" => $ip,
@@ -199,61 +202,93 @@ class M_Radio extends CI_model
           ];
         }
 
-				if ($code == 200) {
-					$notif_data = [
-						'status'  => TRUE,
-						'message' => 'Radio data found',
-						'data'    => $data,
-					];
-				} else {
-					$notif_data = [
-						'status'  => FALSE,
-						'message' => 'Radio data not found',
-						'data' => [
-							"id" => $id,
-							"ip_address" => $ip,
-							"type" =>  $type,
+        if ($code == 200) {
+          $notif_data = [
+            'status'  => TRUE,
+            'message' => 'Radio data found',
+            'data'    => $data,
+          ];
+        } else {
+          $notif_data = [
+            'status'  => FALSE,
+            'message' => 'Radio data not found',
+            'data' => [
+              "id" => $id,
+              "ip_address" => $ip,
+              "type" =>  $type,
               "status" => false,
               "name" => $name,
-						]
-					];
-				}
-			}
-			
-			return $notif_data;
-		} catch (ConnectException $error) {
-			$notif_data = [
-				'status'  => FALSE,
-				'message' => $error->getMessage(),
-				'data' => [
-					"id" => $id,
-					"ip_address" => $ip,
-					"type" =>  $type,
+            ]
+          ];
+        }
+      }
+
+      return $notif_data;
+    } catch (ConnectException $error) {
+      $notif_data = [
+        'status'  => FALSE,
+        'message' => $error->getMessage(),
+        'data' => [
+          "id" => $id,
+          "ip_address" => $ip,
+          "type" =>  $type,
           "status" => false,
           "name" => $name,
-				]
-			];
+        ]
+      ];
 
-			log_message('error', $error->getMessage());
-			
-			return $notif_data;
-		} catch (RequestException $error) {
-			$notif_data = [
-				'status'  => FALSE,
-				'message' => $error->getMessage(),
-				'data' => [
-					"id" => $id,
-					"ip_address" => $ip,
-					"type" =>  $type,
+      log_message('error', $error->getMessage());
+
+      return $notif_data;
+    } catch (RequestException $error) {
+      $notif_data = [
+        'status'  => FALSE,
+        'message' => $error->getMessage(),
+        'data' => [
+          "id" => $id,
+          "ip_address" => $ip,
+          "type" =>  $type,
           "status" => false,
           "name" => $name,
-				]
-			];
+        ]
+      ];
 
-			log_message('error', $error->getMessage());
+      log_message('error', $error->getMessage());
 
-			return $notif_data;
-		}
+      return $notif_data;
+    } catch (ClientException $error) {
+      $notif_data = [
+        'status'  => FALSE,
+        'message' => $error->getMessage(),
+        'data' => [
+          "id" => $id,
+          "ip_address" => $ip,
+          "type" =>  $type,
+          "status" => false,
+          "name" => $name,
+        ]
+      ];
+
+      log_message('error', Psr7\Message::toString($error->getResponse()));
+
+      return $notif_data;
+    } catch (ServerException $error) {
+      $notif_data = [
+        'status'  => FALSE,
+        'message' => $error->getMessage(),
+        'data' => [
+          "id" => $id,
+          "ip_address" => $ip,
+          "type" =>  $type,
+          "status" => false,
+          "name" => $name,
+        ]
+      ];
+
+      log_message('error', Psr7\Message::toString($error->getResponse()));
+
+      return $notif_data;
+    }
   }
 
   public function getRadioByColumn($column)
