@@ -2,10 +2,7 @@ class RadioDisplay {
 	radioElement;
 	dataRadio;
 
-	constructor(
-		element,
-		data,
-	) {
+	constructor(element, data) {
 		this.radioElement = element;
 		this.dataRadio = data;
 	}
@@ -43,7 +40,6 @@ const formSubmit = (form, url, data, callback) => {
 	});
 };
 
-
 const getRadioData = async (id, type, ip, name, callback) => {
 	await $.ajax({
 		url: "main/get_radio",
@@ -51,16 +47,12 @@ const getRadioData = async (id, type, ip, name, callback) => {
 			id: id,
 			type: type,
 			ip_address: ip,
-			name: name
+			name: name,
 		},
 		type: "POST",
 		dataType: "JSON",
 		success: function (result) {
-			if (result.status) {
-				callback(result);
-			} else {
-				callback(result);
-			}
+			callback(result);
 		},
 		error: function (error) {
 			notifError(error);
@@ -306,7 +298,8 @@ function notifError(message = null) {
 			// options
 			icon: "flaticon-error",
 			title: "Error!",
-			message: message == null ? "There are any trouble in procesing data" : message,
+			message:
+				message == null ? "There are any trouble in procesing data" : message,
 		},
 		{
 			// settings

@@ -52,33 +52,35 @@
 				</li>
 				<?php
 				$role = $this->session->userdata('role');
-				if ($role == 1) : ?>
-					<li class="nav-item">
-						<a href="<?= base_url() ?>test">
-							<i class="fas fa-clipboard-check"></i>
-							<p>Testing</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="<?= base_url() ?>settings">
-							<i class="fas fa-cogs"></i>
-							<p>Settings</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="<?= base_url() ?>information">
-							<i class="fas fa-info-circle"></i>
-							<p>Information</p>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="<?= base_url() ?>managementuser">
-							<i class="fas fa-users"></i>
-							<p>Management User</p>
-						</a>
-					</li>
+				if ($role == 1) :
+				?>
+					<!-- <li class="nav-item">
+					<a href="<?= base_url() ?>test">
+						<i class="fas fa-clipboard-check"></i>
+						<p>Testing</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?= base_url() ?>settings">
+						<i class="fas fa-cogs"></i>
+						<p>Settings</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?= base_url() ?>information">
+						<i class="fas fa-info-circle"></i>
+						<p>Information</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?= base_url() ?>managementuser">
+						<i class="fas fa-users"></i>
+						<p>Management User</p>
+					</a>
+				</li> -->
 				<?php
-				endif; ?>
+				endif;
+				?>
 				<!-- <li class="nav-item">
 					<a href="<?= base_url() ?>profile" class="collapsed" aria-expanded="false">
 						<i class="fas fa-user"></i>
