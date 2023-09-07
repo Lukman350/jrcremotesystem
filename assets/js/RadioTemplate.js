@@ -187,7 +187,7 @@ const getRadioTemplates = (data) => {
           Radio Control
         </h3>
   
-        <div class="section-2">
+        <div class="section-2" style="grid-template-rows: repeat(1, 1fr);">
           <div
             class="section-item px-2"
           >
