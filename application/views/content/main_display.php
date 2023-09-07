@@ -1,227 +1,3 @@
-<style>
-	.content-wrapper {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-template-rows: repeat(3, 1fr);
-		grid-column-gap: 10px;
-		grid-row-gap: 10px;
-		overflow-wrap: break-word;
-	}
-
-	@media screen and (max-width: 600px) {
-		.content-wrapper {
-			display: grid;
-			grid-template-columns: repeat(1, 1fr);
-			grid-template-rows: repeat(10, 1fr);
-			grid-column-gap: 10px;
-			grid-row-gap: 10px;
-		}
-	}
-
-	.radio-display {
-		display: grid;
-		padding: 1rem;
-		overflow: auto;
-		background-color: #c0c0c0;
-		color: black;
-	}
-
-	.radio-display .title {
-		font-size: 1.5rem;
-		font-weight: bold;
-		text-transform: uppercase;
-		color: black;
-		position: absolute;
-		top: 0px;
-		left: 40px;
-		z-index: 22;
-		background-color: #c0c0c0;
-	}
-
-	.radio-display .section-title {
-		font-size: 1.2rem;
-		text-transform: uppercase;
-		position: relative;
-		top: 1.4rem;
-		left: 1rem;
-		background-color: #c0c0c0;
-		width: fit-content;
-	}
-
-	.radio-display .section-container {
-		position: relative;
-	}
-
-	.radio-display .section-1 {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-template-rows: repeat(1, 1fr);
-		grid-column-gap: 10px;
-		grid-row-gap: 10px;
-		border: 1px solid #4b4b4b;
-		padding: 1rem;
-	}
-
-	.radio-display .section-2 {
-		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		grid-template-rows: repeat(2, 1fr);
-		grid-column-gap: 10px;
-		grid-row-gap: 10px;
-		border: 1px solid #4b4b4b;
-		padding: 2rem 1rem;
-	}
-
-	.radio-display .section-3 {
-		padding: 1.5rem;
-		border: 1px solid #4b4b4b;
-	}
-
-	.radio-display .col-span-4 {
-		grid-column: span 4;
-	}
-
-	.radio-display .col-span-3 {
-		grid-column: span 3;
-	}
-
-	.radio-display .section-item {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		column-gap: 5rem;
-		min-height: max-content;
-		border: 1px solid #4b4b4b;
-		position: relative;
-		padding: 1rem 0;
-	}
-
-	.radio-display .section-item .section-item-title {
-		font-weight: bold;
-		font-size: 4rem;
-		text-transform: uppercase;
-	}
-
-	.radio-display .section-item .section-item-desc {
-		font-size: 1rem;
-		text-transform: uppercase;
-		font-weight: semi-bold;
-		text-align: center;
-		margin: 0;
-		padding: 0;
-	}
-
-	.radio-display .section-1 .section-item-desc {
-		font-weight: bold;
-	}
-
-	.radio-display .section-2 .section-item-desc {
-		position: absolute;
-		top: -1rem;
-		left: 10px;
-		width: fit-content;
-		background-color: #c0c0c0;
-		height: fit-content;
-	}
-
-	.radio-display .p-9 {
-		padding: 2.25rem;
-	}
-
-	.radio-display .bar-wrapper {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		flex-wrap: nowrap;
-		width: 5rem;
-		height: 8rem;
-		background-color: #e2e8f0;
-		border-radius: 0.25rem;
-		overflow: hidden;
-	}
-
-	.radio-display .progress-bar {
-		width: 100%;
-		height: 100%;
-		text-align: center;
-		overflow: hidden;
-		transition: all 0.3s ease-in-out;
-	}
-
-	.radio-display .line-wrapper {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		position: absolute;
-		top: 37px;
-	}
-
-	.radio-display #rx-level-value,
-	.radio-display #tx-level-value,
-	.radio-display #power-level-value {
-		position: absolute;
-		bottom: 75px;
-		right: 25px;
-		font-weight: bold;
-	}
-
-	.radio-display .line-number {
-		display: block;
-		height: 3px;
-		width: 2rem;
-		background-color: #4b4b4b;
-		transition: all 0.3s ease-in-out;
-	}
-
-	.radio-display .px-7 {
-		padding-left: 1.75rem;
-		padding-right: 1.75rem;
-	}
-
-	.bg-green {
-		background-color: #7E8A44;
-		color: #fff;
-	}
-
-	.btn-custom {
-		background-color: #7E8A44;
-		color: #fff;
-		text-transform: uppercase;
-	}
-
-	/* make a loader */
-	.loader {
-		border: 16px solid #f3f3f3;
-		border-radius: 50%;
-		border-top: 16px solid #3498db;
-		width: 60px;
-		height: 60px;
-		-webkit-animation: spin 2s linear infinite;
-		/* Safari */
-		animation: spin 2s linear infinite;
-	}
-
-	.loader-wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.modal-content {
-		background-color: #c0c0c0;
-	}
-
-	.modal-title {
-		color: black;
-	}
-
-	.radio-display input, .radio-display select {
-		background-color: #7E8A44;
-		color: #fff;
-	}
-</style>
-
 <div class="content">
 	<div class="panel-header bg-primary-gradient">
 		<div class="page-inner py-5">
@@ -271,46 +47,46 @@
 
 								if ($data['status'] == false) :
 							?>
-								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>" class="w-100 btn btn-danger d-flex justify-content-center align-items-center" style="gap: 0.8rem;" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>" data-name="<?= $radio_name; ?>">
-									<span>
-										<i class="fas fa-broadcast-tower" style="font-size: 24px;"></i>
-									</span>
-									
-									<div>
-										<span class="d-block"><?= $data_radio['ip_address'] ?></span>
-										<span class="d-block">Radio <?= $radio_name ?></span>
-										<span class="d-block">
-											Status: OFF
+									<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>" class="w-100 btn btn-danger d-flex justify-content-center align-items-center" style="gap: 0.8rem;" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>" data-name="<?= $radio_name; ?>">
+										<span>
+											<i class="fas fa-broadcast-tower" style="font-size: 24px;"></i>
 										</span>
-									</div>
-								</button>
-							<?php
+
+										<div>
+											<span class="d-block"><?= $data_radio['ip_address'] ?></span>
+											<span class="d-block">Radio <?= $radio_name ?></span>
+											<span class="d-block">
+												Status: OFF
+											</span>
+										</div>
+									</button>
+								<?php
 								else :
-							?>
-								<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>" class="w-100 btn btn-success d-flex justify-content-center align-items-center" style="gap: 0.8rem;"  data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>" data-name="<?= $radio_name; ?>">
-									<span>
-										<i class="fas fa-broadcast-tower" style="font-size: 24px;"></i>
-									</span>
-
-									<div>
-										<span class="d-block"><?= $data_radio['ip_address'] ?></span>
-										<span class="d-block">Radio <?= $radio_name; ?></span>
-										<span class="d-block">
-											CH <?= $data_radio['sts_ch'] ?>
-
-											<?php if ($data_radio['type'] == "HF" || $data_radio['type'] == "NAVTEX") {
-												echo "Freq: " . $data_radio['sts_freq'];
-											} ?>
+								?>
+									<button type="button" id="btn-vhf" data-id="<?= $data_radio['id'] ?>" data-type="<?= $data_radio['type'] ?>" class="w-100 btn btn-success d-flex justify-content-center align-items-center" style="gap: 0.8rem;" data-toggle="modal" data-target="#radio_modal" data-ip="<?= $data_radio['ip_address'] ?>" data-name="<?= $radio_name; ?>">
+										<span>
+											<i class="fas fa-broadcast-tower" style="font-size: 24px;"></i>
 										</span>
-									</div>
-								</button>
+
+										<div>
+											<span class="d-block"><?= $data_radio['ip_address'] ?></span>
+											<span class="d-block">Radio <?= $radio_name; ?></span>
+											<span class="d-block">
+												CH <?= $data_radio['sts_ch'] ?>
+
+												<?php if ($data_radio['type'] == "HF" || $data_radio['type'] == "NAVTEX") {
+													echo "Freq: " . $data_radio['sts_freq'];
+												} ?>
+											</span>
+										</div>
+									</button>
 							<?php endif;
 							endforeach; ?>
 
 							<?php
 							// $countVHF = 0;
 							// $countHF = 0;
-							
+
 							// foreach ($radio_data as $radio) :
 							// 	$type = "";
 							// 	if ($radio['type'] == "VHF") {
@@ -324,7 +100,7 @@
 							// 	}
 							?>
 
-								<!-- <div>
+							<!-- <div>
 									<button type="button" id="btn-vhf" data-id="< //$radio['id'] " data-radio-no=" $type " class="w-100 //($radio['status'] ? 'btn btn-block btn-success' : 'btn btn-block btn-danger') " data-toggle="modal" data-target="#radio_modal">
 										Radio //$type; 
 										//<span class="d-block">
@@ -332,7 +108,8 @@
 										</span>
 									</button>
 								</div> -->
-							<?php //endforeach; ?>
+							<?php //endforeach; 
+							?>
 						</div>
 					</div>
 				</div>

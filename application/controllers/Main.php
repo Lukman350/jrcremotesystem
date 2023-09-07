@@ -13,44 +13,35 @@ class Main extends CI_Controller
 	{
 		$data['title'] 			= 'Radio Remote System';
 		$data['JS'] 			= ['RadioTemplate.js', 'main_display.js'];
-		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
-		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);
-		$data['radio_data'] = $this->radio->getRadioByColumn('id, name, status, channel, ip_address, type');
-		// $api_url = 'https://jsonplaceholder.typicode.com';
+		$data['CSS'] 				= ['main_display.css'];
+		$radio = $this->radio->getAllRadio();
 
-		$radio_length = count($data['radio_data']);
+		$radio_length = count($radio);
 
 		$response = [];
 		for ($i = 0; $i < $radio_length; $i++) {
-			$response[$i] = $this->_getRadioFromAPI($data['radio_data'][$i]);
+			$response[$i] = $this->radio->getRadio([
+				'id' => $radio[$i]['id'],
+				'type' => $radio[$i]['type'],
+				'name' => $radio[$i]['name'],
+				'ip_address' => $radio[$i]['ip_address']
+			]);
 		}
 
 		$data['response'] = $response;
 
+		$data['modal'] 			= $this->load->view('modals/main_modal', $data, TRUE);
+		$data['radio_modal'] = $this->load->view('modals/radio_modal', $data, TRUE);
 		$page['sidebar'] 		= $this->load->view('templates/sidebar', $data, TRUE);
 		$page['content'] 		= $this->load->view('content/main_display', $data, TRUE);
 
 		$this->load->view('templates/layout', $page);
 	}
 
-	private function _getRadioFromAPI($radio)
-	{
-		$data = [
-			'id' => $radio['id'],
-			'type' => $radio['type'],
-			'name' => $radio['name'],
-			'ip_address' => $radio['ip_address']
-		];
-		
-		$response = $this->radio->getRadio($data);
-
-		return $response;
-	}
-
 	public function get_radio()
 	{
 		$notif_data = [];
-		
+
 		$radio_id = $_POST['id'];
 		$ip_address = $_POST['ip_address'];
 		$name = $_POST['name'];
@@ -246,7 +237,8 @@ class Main extends CI_Controller
 		}
 	}
 
-	private function _sendCurl($url, $method, $headers = []) {
+	private function _sendCurl($url, $method, $headers = [])
+	{
 		$curl = curl_init();
 
 		curl_setopt_array($curl, [
@@ -265,7 +257,7 @@ class Main extends CI_Controller
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
 		curl_close($curl);
-		
+
 		$notif = array();
 
 		if ($err) {
@@ -277,7 +269,7 @@ class Main extends CI_Controller
 		} else {
 			$notif = [
 				'status' => true,
-				'message'=>'Radio data found',
+				'message' => 'Radio data found',
 				'data' => $response,
 				'code' => $httpcode
 			];
