@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2023 at 09:28 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.4.27
+-- Generation Time: Oct 19, 2023 at 09:13 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,7 +37,7 @@ CREATE TABLE `auth_tb_user` (
   `status_user` int(1) NOT NULL,
   `created_by` int(11) NOT NULL,
   `created_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `auth_tb_user`
@@ -62,7 +62,7 @@ CREATE TABLE `radio` (
   `rx_level` int(24) NOT NULL DEFAULT 0,
   `tx_level` int(24) NOT NULL DEFAULT 0,
   `power_level` int(24) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `radio`
@@ -73,7 +73,7 @@ INSERT INTO `radio` (`id`, `ip_address`, `type`, `status`, `channel`, `rx_level`
 (2, '192.168.101.102', 'VHF', 1, 24, 70, 0, 40),
 (3, '192.168.101.103', 'VHF', 0, 20, 50, 0, 20),
 (4, '192.168.101.104', 'VHF', 1, 10, 70, 0, 40),
-(5, '192.168.101.26', 'NAVTEK', 0, 6, 50, 0, 20),
+(5, '192.168.101.202', 'NAVTEX', 0, 6, 50, 0, 20),
 (6, '192.168.101.151', 'HF', 1, 70, 70, 0, 0),
 (7, '192.168.101.152', 'HF', 0, 2, 50, 0, 0),
 (8, '192.168.101.153', 'HF', 1, 1, 70, 0, 40),
@@ -94,7 +94,7 @@ CREATE TABLE `tb_user` (
   `nama` varchar(120) NOT NULL,
   `email` varchar(100) NOT NULL,
   `created_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tb_user`
