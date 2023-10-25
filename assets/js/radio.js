@@ -30,23 +30,11 @@ const getRadio = async (allRadio) => {
 		let data;
 
 		if (radio.type === "VHF" || radio.type.contains("VHF")) {
-			data = await $.ajax({
-				url: `http://${radio.ip_address}${endpoint}`,
-				type: "GET",
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader(
-						"Authorization",
-						`Basic ${btoa(`${auth.username}:${auth.password}`)}`
-					);
-					xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
-					xhr.setRequestHeader("Access-Control-Allow-Methods", "GET");
-					xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
-				},
-				success: function (result) {
-					return result;
-				},
-				error: function (error) {
-					notifError(error);
+			data = await fetch(`http://${radio.ip_address}${endpoint}`, {
+				headers: {
+					Authorization: "Basic " + btoa(`${auth.username}:${auth.password}`),
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Credentials": "true",
 				},
 			});
 		} else {
