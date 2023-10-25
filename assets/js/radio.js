@@ -32,10 +32,11 @@ const getRadio = async (allRadio) => {
 		if (radio.type === "VHF" || radio.type.contains("VHF")) {
 			data = await $.ajax({
 				url: `http://${radio.ip_address}${endpoint}`,
-				username: auth.username,
-				password: auth.password,
 				type: "GET",
 				dataType: "JSON",
+				headers: {
+					Authorization: `Basic ${btoa(`${auth.username}:${auth.password}`)}`,
+				},
 				success: function (result) {
 					return result;
 				},
