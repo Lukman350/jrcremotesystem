@@ -33,7 +33,7 @@ const getRadio = async (allRadio) => {
 			data = await $.ajax({
 				url: `http://${radio.ip_address}${endpoint}`,
 				type: "GET",
-				dataType: "json",
+				dataType: "html",
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(
 						"Authorization",
