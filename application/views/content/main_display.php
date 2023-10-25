@@ -23,7 +23,7 @@
 						</div>
 					</div>
 					<div class="card-body w-100">
-						<div class="content-wrapper">
+						<div class="content-wrapper" id="radio-list">
 							<?php
 							$countVHF = 0;
 							$countHF = 0;

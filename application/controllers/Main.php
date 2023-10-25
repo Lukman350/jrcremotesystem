@@ -12,7 +12,7 @@ class Main extends CI_Controller
 	public function index()
 	{
 		$data['title'] 			= 'Radio Remote System';
-		$data['JS'] 			= ['RadioTemplate.js', 'main_display.js'];
+		$data['JS'] 			= ['RadioTemplate.js', 'main_display.js', 'digest-ajax.js', 'radio.js'];
 		$data['CSS'] 				= ['main_display.css'];
 		$radio = $this->radio->getAllRadio();
 
@@ -36,6 +36,19 @@ class Main extends CI_Controller
 		$page['content'] 		= $this->load->view('content/main_display', $data, TRUE);
 
 		$this->load->view('templates/layout', $page);
+	}
+
+	public function getAllRadio()
+	{
+		$radio = $this->radio->getAllRadio();
+
+		$response = [
+			'status' => true,
+			'message' => 'Radio data found',
+			'data' => $radio
+		];
+
+		echo json_encode($response);
 	}
 
 	public function get_radio()
