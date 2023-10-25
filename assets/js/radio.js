@@ -37,7 +37,9 @@ const getRadio = async (allRadio) => {
 					"Access-Control-Allow-Credentials": "true",
 					"Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
 				},
-			});
+			})
+				.then((response) => response.json())
+				.catch((error) => notifError(error));
 		} else {
 			data = await $.ajaxDigest(`http://${radio.ip_address}${endpoint}`, {
 				username: auth.username,
