@@ -35,6 +35,7 @@ const getRadio = async (allRadio) => {
 					Authorization: "Basic " + btoa(`${auth.username}:${auth.password}`),
 					"Access-Control-Allow-Origin": "*",
 					"Access-Control-Allow-Credentials": "true",
+					"Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
 				},
 			});
 		} else {
