@@ -35,7 +35,15 @@ const getRadio = async (allRadio) => {
 				type: "GET",
 				dataType: "JSON",
 				headers: {
+					Accept: "*/*",
+					"Accept-Encoding": "gzip, deflate",
+					"Accept-Language": "en-US,en;q=0.9",
 					Authorization: `Basic ${btoa(`${auth.username}:${auth.password}`)}`,
+					"Cache-Control": "max-age=0",
+					Connection: "keep-alive",
+					Host: radio.ip_address,
+					"If-Modified-Since": "Thu, 01 Jan 1970 00:00:00 GMT",
+					Referer: `http://${radio.ip_address}`,
 				},
 				success: function (result) {
 					return result;
