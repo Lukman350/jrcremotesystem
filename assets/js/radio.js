@@ -1,8 +1,7 @@
 const setTemplate = (data) => {};
 
-let allRadio;
 const getAllRadio = async () => {
-	allRadio = await $.ajax({
+	const response = await $.ajax({
 		url: "main/getAllRadio",
 		type: "GET",
 		dataType: "JSON",
@@ -13,9 +12,11 @@ const getAllRadio = async () => {
 			notifError(error);
 		},
 	});
+
+	return response;
 };
 
-const getRadio = async () => {
+const getRadio = async (allRadio) => {
 	for (const radio of allRadio.data) {
 		const endpoint =
 			radio.type === "VHF" || radio.type.contains("VHF")
@@ -58,8 +59,10 @@ const getRadio = async () => {
 	}
 };
 
-getAllRadio();
+(async () => {
+	const allRadio = await getAllRadio();
 
-setInterval(getRadio, 5 * 60 * 1000);
+	setInterval(getRadio(allRadio), 5 * 60 * 1000);
 
-getRadio();
+	getRadio(allRadio);
+})();
