@@ -31,6 +31,7 @@ const getRadio = async (allRadio) => {
 
 		if (radio.type === "VHF" || radio.type.contains("VHF")) {
 			data = await fetch(`http://${radio.ip_address}${endpoint}`, {
+				mode: "no-cors",
 				headers: {
 					Authorization: "Basic " + btoa(`${auth.username}:${auth.password}`),
 					"Access-Control-Allow-Origin": "*",
