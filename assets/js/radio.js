@@ -19,24 +19,21 @@ const getAllRadio = async () => {
 const getRadio = async (allRadio) => {
 	for (const radio of allRadio.data) {
 		const endpoint =
-			radio.type === "VHF" || radio.type.contains("VHF")
+			radio.type === "VHF" || radio.type.includes("VHF")
 				? "/index_get.cgi"
 				: "/status_get.cgi";
 		const auth =
-			radio.type === "VHF" || radio.type.contains("VHF")
+			radio.type === "VHF" || radio.type.includes("VHF")
 				? { username: "root", password: "/admin/" }
 				: { username: "jrc", password: "aaaa" };
 
 		let data;
 
-		if (radio.type === "VHF" || radio.type.contains("VHF")) {
+		if (radio.type === "VHF" || radio.type.includes("VHF")) {
 			data = await fetch(`http://${radio.ip_address}${endpoint}`, {
 				mode: "no-cors",
 				headers: {
 					Authorization: "Basic " + btoa(`${auth.username}:${auth.password}`),
-					"Access-Control-Allow-Origin": "*",
-					"Access-Control-Allow-Credentials": "true",
-					"Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
 				},
 			})
 				.then((response) => response.json())
