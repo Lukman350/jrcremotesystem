@@ -36,12 +36,11 @@ const getRadio = async (allRadio) => {
 				beforeSend: function (xhr) {
 					xhr.setRequestHeader(
 						"Authorization",
-						`Basic ${btoa(`${auth.username}:${auth.password}`)}`,
-						"Access-Control-Allow-Origin",
-						"*",
-						"Access-Control-Allow-Credentials",
-						"true"
+						`Basic ${btoa(`${auth.username}:${auth.password}`)}`
 					);
+					xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+					xhr.setRequestHeader("Access-Control-Allow-Methods", "GET");
+					xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
 				},
 				success: function (result) {
 					return result;
